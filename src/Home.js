@@ -159,7 +159,7 @@ const Home = () => {
       questionData: "placeholder",
       hostUID: auth.currentUser.uid,
       hostDisplayName: auth.currentUser.displayName,
-      playerList: [auth.currentUser.displayName],
+      playerList: { [auth.currentUser.uid]: auth.currentUser.displayName },
       score: 0,
     });
   };

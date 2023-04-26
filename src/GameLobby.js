@@ -25,6 +25,7 @@ const DB_ROOM_KEY = "rooms";
 
 const GameLobby = () => {
   const [displayName, setDisplayName] = useState("None");
+  const [connectedPlayers, setConnectedPlayers] = useState({});
   const firstRender = useRef(true);
 
   const { roomKey } = useParams();
@@ -44,9 +45,23 @@ const GameLobby = () => {
         // User is signed out
       }
     });
-    onValue(currentRoomRef, (snapshot) => {
-      const data = snapshot.val();
-      console.log("Change in data: ", data);
+
+    /*
+   room = {
+    gameStarted: false,
+    hostDisplayName: str,
+    hostUID: str,
+    playerList: {playerUID: displayName,
+                 playerUID2: displayName2},
+    questionData: {},
+    roomName: str,
+    score: int
+   } 
+   */
+    onValue(currentRoomRef, (room) => {
+      const roomData = room.val();
+      console.log("Change in data: ", roomData);
+      setConnectedPlayers(roomData.playerList);
     });
   }, []);
 
@@ -60,7 +75,12 @@ const GameLobby = () => {
   return (
     <div className="App">
       <div>Name: {displayName}</div>
-      <button onClick={changeData}>Update Score</button>
+      <div>Connected Players</div>
+      <div>
+        {Object.entries(connectedPlayers).map((key, value) => {
+          <div>{value}</div>;
+        })}
+      </div>
     </div>
   );
 };

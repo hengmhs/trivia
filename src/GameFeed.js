@@ -32,8 +32,9 @@ const GameFeed = (props) => {
         <div>
           Players:
           <ol>
-            {room.playerList.map((player) => {
-              return <li>{player}</li>;
+            {Object.entries(room.playerList).map((player) => {
+              // player = ['uid':'displayName']
+              return <li>{player[1]}</li>;
             })}
           </ol>
         </div>
