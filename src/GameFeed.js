@@ -25,7 +25,6 @@ const GameFeed = (props) => {
     });
   }, []);
   let roomDisplay = openGameList.map((room) => {
-    console.log(room.playerList);
     return (
       <div className="room-card" key={room.key}>
         <div>

@@ -46,7 +46,6 @@ const Home = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setDisplayName(user.displayName);
-        console.log(`${user.uid} logged in`);
       } else {
         console.log("No one is logged in");
         // User is signed out
@@ -64,12 +63,11 @@ const Home = () => {
 
   useEffect(() => {
     // do not trigger this on the first render
-    console.log(firstRender);
     if (firstRender.current) {
       firstRender.current = false;
     } else {
-      console.log("triggering load question");
-      if (currentQuestionIndex < questionList.length - 1) {
+      console.log("Question Index: ", currentQuestionIndex);
+      if (currentQuestionIndex < questionList.length) {
         loadQuestion(currentQuestionIndex);
       } else {
         console.log("Game Over, Restarting");
@@ -103,7 +101,6 @@ const Home = () => {
 
   const loadQuestion = (questionListIndex) => {
     setCurrentQuestionData(questionList[questionListIndex]);
-    console.log(currentQuestionData);
   };
   const getQuestions = () => {
     axios
@@ -127,6 +124,10 @@ const Home = () => {
   const submitAnswer = (currentOptionsPosition) => {
     const userAnswer = currentOptions[currentOptionsPosition];
     console.log(userAnswer);
+    if (currentQuestionIndex === questionList.length) {
+      console.log("No more questions");
+      return;
+    }
     if (currentAnswer === userAnswer) {
       setQuizText("Correct!");
       setScore((score) => {
