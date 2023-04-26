@@ -12,9 +12,11 @@ import { database } from "./firebase";
 import { set, ref, push, onChildAdded } from "firebase/database";
 import GameFeed from "./GameFeed.js";
 
+// Objective: Users can join room via the React Router Link, and can increment/decrement counters
+
 const DB_ROOM_KEY = "rooms";
 
-const App = () => {
+const GameLobby = () => {
   const [displayName, setDisplayName] = useState("None");
   const [quizText, setQuizText] = useState("Waiting for Question");
   const [currentQuestionData, setCurrentQuestionData] = useState({
@@ -41,24 +43,19 @@ const App = () => {
   ]);
   const firstRender = useRef(true);
 
+  // componentDidMount
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         console.log(user);
-        // TODO: displayName is null because onAuthStateChanged is
-        // not called after the displayName is updated in AuthForm
         setDisplayName(user.displayName);
         console.log(`${user.uid} logged in`);
       } else {
         console.log("No one is logged in");
         // User is signed out
       }
-    });
-    const roomRef = ref(database, DB_ROOM_KEY);
-    onChildAdded(roomRef, (data) => {
-      console.log(data.val().roomName);
     });
   }, []);
 
@@ -146,22 +143,7 @@ const App = () => {
       });
     }
   };
-  const createRoom = (e) => {
-    e.preventDefault();
-    const roomName = e.target[0].value;
-    console.log(roomName);
-    const roomListRef = ref(database, DB_ROOM_KEY);
-    const newRoomRef = push(roomListRef);
-    console.log(auth.currentUser);
-    set(newRoomRef, {
-      roomName: roomName,
-      gameStarted: false,
-      questionData: "placeholder",
-      hostUID: auth.currentUser.uid,
-      hostDisplayName: auth.currentUser.displayName,
-      playerList: [auth.currentUser.displayName],
-    });
-  };
+
   return (
     <div className="App">
       <div>Name: {displayName}</div>
@@ -178,22 +160,15 @@ const App = () => {
       )}
 
       <div>
-        {true && <AuthForm setDisplayName={setDisplayName} />}
+        {false && <AuthForm setDisplayName={setDisplayName} />}
         <LoginForm setDisplayName={setDisplayName} />
       </div>
       <div className="login-info">
         <div>email: user@test.com</div>
         <div>pwd: test123</div>
       </div>
-      <h1>Create Room</h1>
-      <form onSubmit={createRoom}>
-        <div>Room Name:</div>
-        <input type="text"></input>
-        <input type="submit" value="Create Room"></input>
-      </form>
-      <GameFeed DB_ROOM_KEY={DB_ROOM_KEY} />
     </div>
   );
 };
 
-export default App;
+export default GameLobby;

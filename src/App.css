@@ -10,3 +10,17 @@ body {
   margin: 1em;
   background-color: rgb(179, 207, 223);
 }
+
+.login-info {
+  padding: 1em;
+  background-color: rgb(177, 139, 68);
+  margin: 1em;
+  width: 15em;
+}
+
+.room-card {
+  padding: 1em;
+  width: 15em;
+  margin: 1em;
+  outline: white solid 1px;
+}

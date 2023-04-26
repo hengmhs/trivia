@@ -43,6 +43,7 @@ const Quiz = (props) => {
           D: {props.currentOptions[3]}
         </button>
       </div>
+      <div>{props.quizText}</div>
     </div>
   );
 };
