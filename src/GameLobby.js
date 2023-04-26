@@ -77,8 +77,9 @@ const GameLobby = () => {
       <div>Name: {displayName}</div>
       <div>Connected Players</div>
       <div>
-        {Object.entries(connectedPlayers).map((key, value) => {
-          <div>{value}</div>;
+        {Object.entries(connectedPlayers).map((player) => {
+          // player = ['uid':'displayName']
+          return <li key={player[0]}>{player[1]}</li>;
         })}
       </div>
     </div>
