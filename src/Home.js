@@ -45,11 +45,6 @@ const Home = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        console.log(user);
-        // TODO: displayName is null because onAuthStateChanged is
-        // not called after the displayName is updated in AuthForm
         setDisplayName(user.displayName);
         console.log(`${user.uid} logged in`);
       } else {
@@ -150,10 +145,8 @@ const Home = () => {
   const createRoom = (e) => {
     e.preventDefault();
     const roomName = e.target[0].value;
-    console.log(roomName);
     const roomListRef = ref(database, DB_ROOM_KEY);
     const newRoomRef = push(roomListRef);
-    console.log(auth.currentUser);
     set(newRoomRef, {
       roomName: roomName,
       gameStarted: false,
@@ -166,7 +159,7 @@ const Home = () => {
   return (
     <div className="App">
       <div>Name: {displayName}</div>
-      {false && (
+      {true && (
         <Quiz
           displayName={displayName}
           score={score}

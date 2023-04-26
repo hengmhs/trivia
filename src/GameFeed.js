@@ -27,7 +27,7 @@ const GameFeed = (props) => {
   let roomDisplay = openGameList.map((room) => {
     console.log(room.playerList);
     return (
-      <div className="room-card">
+      <div className="room-card" key={room.key}>
         <div>
           <b>{room.roomName}</b>
         </div>
@@ -37,7 +37,7 @@ const GameFeed = (props) => {
           <ol>
             {Object.entries(room.playerList).map((player) => {
               // player = ['uid':'displayName']
-              return <li>{player[1]}</li>;
+              return <li key={player[0]}>{player[1]}</li>;
             })}
           </ol>
         </div>
