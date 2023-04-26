@@ -24,12 +24,14 @@ import { useParams } from "react-router-dom";
 // Objective: Users can join room via the React Router Link, and can increment/decrement counters
 
 const DB_ROOM_KEY = "rooms";
+const DB_SCORE_KEY = "scores";
 
 const GameLobby = () => {
   const [displayName, setDisplayName] = useState("None");
   const [connectedPlayers, setConnectedPlayers] = useState({});
   const firstRender = useRef(true);
 
+  // get the room key from the URL, params refers to path="/room/:roomKey"
   const { roomKey } = useParams();
   console.log("Room Key: " + roomKey);
   const currentRoomRef = ref(database, `${DB_ROOM_KEY}/${roomKey}`);
@@ -37,16 +39,23 @@ const GameLobby = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
         setDisplayName(user.displayName);
-        console.log(`${user.uid} logged in`);
+
+        // create user id in rooms/roomKey/playerList
         const connectedPlayerRef = ref(
           database,
           `${DB_ROOM_KEY}/${roomKey}/playerList/${user.uid}`
         );
         set(connectedPlayerRef, user.displayName);
         onDisconnect(connectedPlayerRef).remove(connectedPlayerRef);
+
+        // create user id with score in scores/roomKey
+        const scoreRef = ref(
+          database,
+          `${DB_SCORE_KEY}/${roomKey}/${user.uid}`
+        );
+        set(scoreRef, 0);
+        onDisconnect(scoreRef).remove(scoreRef);
       } else {
         console.log("No one is logged in");
         // User is signed out

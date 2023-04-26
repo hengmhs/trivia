@@ -13,6 +13,7 @@ import { set, ref, push, onChildAdded } from "firebase/database";
 import GameFeed from "./GameFeed.js";
 
 const DB_ROOM_KEY = "rooms";
+const DB_SCORE_KEY = "scores";
 
 const Home = () => {
   const [displayName, setDisplayName] = useState("None");
@@ -160,7 +161,6 @@ const Home = () => {
       hostUID: auth.currentUser.uid,
       hostDisplayName: auth.currentUser.displayName,
       playerList: { [auth.currentUser.uid]: auth.currentUser.displayName },
-      score: 0,
     });
   };
   return (
