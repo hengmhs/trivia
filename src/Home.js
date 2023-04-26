@@ -186,6 +186,10 @@ const Home = () => {
         <div>email: user@test.com</div>
         <div>pwd: test123</div>
       </div>
+      <div className="login-info">
+        <div>email: user2@test.com</div>
+        <div>pwd: test123</div>
+      </div>
       <h1>Create Room</h1>
       <form onSubmit={createRoom}>
         <div>Room Name:</div>

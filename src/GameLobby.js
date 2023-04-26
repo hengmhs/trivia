@@ -16,6 +16,8 @@ import {
   onChildAdded,
   onValue,
   update,
+  onDisconnect,
+  remove,
 } from "firebase/database";
 import { useParams } from "react-router-dom";
 
@@ -31,7 +33,6 @@ const GameLobby = () => {
   const { roomKey } = useParams();
   console.log("Room Key: " + roomKey);
   const currentRoomRef = ref(database, `${DB_ROOM_KEY}/${roomKey}`);
-
   // componentDidMount
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -40,6 +41,12 @@ const GameLobby = () => {
         // https://firebase.google.com/docs/reference/js/firebase.User
         setDisplayName(user.displayName);
         console.log(`${user.uid} logged in`);
+        const connectedPlayerRef = ref(
+          database,
+          `${DB_ROOM_KEY}/${roomKey}/playerList/${user.uid}`
+        );
+        set(connectedPlayerRef, user.displayName);
+        onDisconnect(connectedPlayerRef).remove(connectedPlayerRef);
       } else {
         console.log("No one is logged in");
         // User is signed out
