@@ -14,7 +14,7 @@ import GameFeed from "./GameFeed.js";
 
 const DB_ROOM_KEY = "rooms";
 
-const App = () => {
+const Home = () => {
   const [displayName, setDisplayName] = useState("None");
   const [quizText, setQuizText] = useState("Waiting for Question");
   const [currentQuestionData, setCurrentQuestionData] = useState({
@@ -160,6 +160,7 @@ const App = () => {
       hostUID: auth.currentUser.uid,
       hostDisplayName: auth.currentUser.displayName,
       playerList: [auth.currentUser.displayName],
+      score: 0,
     });
   };
   return (
@@ -196,4 +197,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Home;
