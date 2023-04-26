@@ -43,7 +43,11 @@ const App = () => {
       firstRender.current = false;
     } else {
       console.log("triggering load question");
-      loadQuestion(currentQuestionIndex);
+      if (currentQuestionIndex < questionList.length - 1) {
+        loadQuestion(currentQuestionIndex);
+      } else {
+        console.log("Game Over, Restarting");
+      }
     }
   }, [currentQuestionIndex]);
 
@@ -82,6 +86,7 @@ const App = () => {
       )
       .then((res) => {
         setQuestionList(res.data.results);
+        setCurrentQuestionIndex(0);
       });
     /*
       res.data.results -> Array
