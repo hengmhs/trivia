@@ -2,26 +2,88 @@ import React from "react";
 import "./App.css";
 import NameForm from "./NameForm";
 import Quiz from "./Quiz";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import he from "he";
 
 const App = () => {
   const [displayName, setDisplayName] = useState("None");
-  const [currentQuestion, setCurrentQuestion] = useState("None");
+  const [currentQuestionData, setCurrentQuestionData] = useState({
+    category: "placeholder",
+    correct_answer: "placeholder",
+    difficulty: "placeholder",
+    incorrect_answers: "placeholder",
+    question: "placeholder",
+    type: "placeholder",
+  });
   const [currentOptions, setCurrentOptions] = useState(["A", "B", "C", "D"]);
   const [currentAnswer, setCurrentAnswer] = useState(null);
   const [score, setScore] = useState(0);
-  const [questionList, setQuestionList] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [questionList, setQuestionList] = useState([
+    {
+      category: "placeholder",
+      correct_answer: "placeholder",
+      difficulty: "placeholder",
+      incorrect_answers: ["placeholder", "placeholder", "placeholder"],
+      question: "placeholder",
+      type: "placeholder",
+    },
+  ]);
+  const firstRender = useRef(true);
+
+  useEffect(() => {
+    loadQuestion(0);
+  }, [questionList]);
+
+  useEffect(() => {
+    // do not trigger this on the first render
+    console.log(firstRender);
+    if (firstRender.current) {
+      firstRender.current = false;
+    } else {
+      console.log("triggering load question");
+      loadQuestion(currentQuestionIndex);
+    }
+  }, [currentQuestionIndex]);
+
+  useEffect(() => {
+    // use the he module to decode the HTML response from the API
+    setCurrentAnswer(he.decode(currentQuestionData.correct_answer));
+    const options = [
+      ...currentQuestionData.incorrect_answers,
+      currentQuestionData.correct_answer,
+    ];
+    // Durstenfeld Shuffle from Stack Overflow: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+    const shuffleArray = (array) => {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    };
+    setCurrentOptions(
+      shuffleArray(
+        options.map((option) => {
+          return he.decode(option);
+        })
+      )
+    );
+  }, [currentQuestionData]);
+
+  const loadQuestion = (questionListIndex) => {
+    setCurrentQuestionData(questionList[questionListIndex]);
+    console.log(currentQuestionData);
+  };
   const getQuestions = () => {
     axios
       .get(
-        "https://opentdb.com/api.php?amount=1&category=9&difficulty=medium&type=multiple"
+        "https://opentdb.com/api.php?amount=5&difficulty=medium&type=multiple"
       )
       .then((res) => {
-        return res.data.results[0];
-      })
-      /*
+        setQuestionList(res.data.results);
+      });
+    /*
       res.data.results -> Array
       res.data.results[0] = {
         category: str,
@@ -32,21 +94,6 @@ const App = () => {
         type: str
       }
       */
-      .then((data) => {
-        /* use the he module to decode the HTML response from the API */
-        setCurrentQuestion(he.decode(data.question));
-        setCurrentAnswer(he.decode(data.correct_answer));
-        const options = [...data.incorrect_answers, data.correct_answer];
-        const decodedOptions = options.map((option) => {
-          return he.decode(option);
-        });
-        console.log(options);
-        console.log(decodedOptions);
-        return decodedOptions;
-      })
-      .then((decodedOptions) => {
-        setCurrentOptions(decodedOptions);
-      });
   };
   const submitAnswer = (currentOptionsPosition) => {
     const userAnswer = currentOptions[currentOptionsPosition];
@@ -56,8 +103,14 @@ const App = () => {
       setScore((score) => {
         return score + 1;
       });
+      setCurrentQuestionIndex((currentQuestionIndex) => {
+        return currentQuestionIndex + 1;
+      });
     } else {
       console.log("Wrong!");
+      setCurrentQuestionIndex((currentQuestionIndex) => {
+        return currentQuestionIndex + 1;
+      });
     }
   };
   return (
@@ -66,7 +119,7 @@ const App = () => {
       <div>Name: {displayName}</div>
       <NameForm setDisplayName={setDisplayName} />
       <div>Score: {score}</div>
-      <div>Q: {currentQuestion}</div>
+      <div>Q: {he.decode(currentQuestionData.question)}</div>
       <button onClick={getQuestions}>Get Question</button>
       <div>
         <button
