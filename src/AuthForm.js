@@ -24,7 +24,7 @@ class AuthForm extends React.Component {
         return displayName;
       })
       .then((displayName) => {
-        this.props.changeDisplayName(displayName);
+        this.props.setDisplayName(displayName);
       })
       .catch((error) => {
         const errorCode = error.code;

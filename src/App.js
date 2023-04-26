@@ -1,10 +1,13 @@
 import React from "react";
 import "./App.css";
-import NameForm from "./NameForm";
 import Quiz from "./Quiz";
+import AuthForm from "./AuthForm";
+import LoginForm from "./LoginForm";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import he from "he";
+import { auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const App = () => {
   const [displayName, setDisplayName] = useState("None");
@@ -31,6 +34,23 @@ const App = () => {
     },
   ]);
   const firstRender = useRef(true);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        console.log(user);
+        // TODO: displayName is null because onAuthStateChanged is
+        // not called after the displayName is updated in AuthForm
+        setDisplayName(user.displayName);
+        console.log(`${user.uid} logged in`);
+      } else {
+        console.log("No one is logged in");
+        // User is signed out
+      }
+    });
+  }, []);
 
   useEffect(() => {
     loadQuestion(0);
@@ -120,46 +140,23 @@ const App = () => {
   };
   return (
     <div className="App">
-      Trivia Quiz
       <div>Name: {displayName}</div>
-      <NameForm setDisplayName={setDisplayName} />
-      <div>Score: {score}</div>
-      <div>Q: {he.decode(currentQuestionData.question)}</div>
-      <button onClick={getQuestions}>Get Question</button>
+      {false && (
+        <Quiz
+          displayName={displayName}
+          score={score}
+          currentQuestionData={currentQuestionData}
+          getQuestions={getQuestions}
+          submitAnswer={submitAnswer}
+          currentOptions={currentOptions}
+        />
+      )}
+
       <div>
-        <button
-          className="option-btn"
-          onClick={() => {
-            submitAnswer(0);
-          }}
-        >
-          A: {currentOptions[0]}
-        </button>
-        <button
-          className="option-btn"
-          onClick={() => {
-            submitAnswer(1);
-          }}
-        >
-          B: {currentOptions[1]}
-        </button>
-        <button
-          className="option-btn"
-          onClick={() => {
-            submitAnswer(2);
-          }}
-        >
-          C: {currentOptions[2]}
-        </button>
-        <button
-          className="option-btn"
-          onClick={() => {
-            submitAnswer(3);
-          }}
-        >
-          D: {currentOptions[3]}
-        </button>
+        {false && <AuthForm setDisplayName={setDisplayName} />}
+        <LoginForm setDisplayName={setDisplayName} />
       </div>
+      <div>email: sean12@test.com pwd: pokergg</div>
     </div>
   );
 };

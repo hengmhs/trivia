@@ -18,6 +18,7 @@ class LoginForm extends React.Component {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
+        this.props.setDisplayName(userCredential.user.displayName);
       })
       .catch((error) => {
         const errorCode = error.code;
