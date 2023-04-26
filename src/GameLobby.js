@@ -18,6 +18,7 @@ import {
   update,
   onDisconnect,
   remove,
+  runTransaction,
 } from "firebase/database";
 import { useParams } from "react-router-dom";
 
@@ -29,6 +30,7 @@ const DB_SCORE_KEY = "scores";
 const GameLobby = () => {
   const [displayName, setDisplayName] = useState("None");
   const [connectedPlayers, setConnectedPlayers] = useState({});
+  const [userUID, setUserUID] = useState("");
   const firstRender = useRef(true);
 
   // get the room key from the URL, params refers to path="/room/:roomKey"
@@ -40,6 +42,7 @@ const GameLobby = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setDisplayName(user.displayName);
+        setUserUID(user.uid);
 
         // create user id in rooms/roomKey/playerList
         const connectedPlayerRef = ref(
@@ -81,11 +84,11 @@ const GameLobby = () => {
     });
   }, []);
 
-  const changeData = () => {
-    const scoreRef = ref(database, `${DB_ROOM_KEY}/${roomKey}/score`);
-    const updates = {};
-    updates[`${DB_ROOM_KEY}/${roomKey}/score`] = 1;
-    update(ref(database), updates);
+  const increaseScore = () => {
+    const userScoreRef = ref(database, `${DB_SCORE_KEY}/${roomKey}/${userUID}`);
+    runTransaction(userScoreRef, (score) => {
+      return score + 1;
+    });
   };
 
   return (
@@ -98,6 +101,7 @@ const GameLobby = () => {
           return <li key={player[0]}>{player[1]}</li>;
         })}
       </div>
+      <button onClick={increaseScore}>Increase Score</button>
     </div>
   );
 };
