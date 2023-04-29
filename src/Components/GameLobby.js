@@ -10,15 +10,17 @@ import {
   onValue,
   onDisconnect,
   runTransaction,
+  child,
+  get,
 } from "firebase/database";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import he from "he";
 
 // Objective: Users can join room via the React Router Link, and can increment/decrement counters
 
 const DB_ROOM_KEY = "rooms";
 const DB_SCORE_KEY = "scores";
+const DB_QUESTIONS_KEY = "questions";
 
 const GameLobby = () => {
   const [displayName, setDisplayName] = useState("None");
@@ -26,6 +28,7 @@ const GameLobby = () => {
   const [scores, setScores] = useState({ placeholder: 0 });
   const [userUID, setUserUID] = useState("");
   const [quizText, setQuizText] = useState("Waiting for Question");
+  const [hostUID, setHostUID] = useState("");
   const [currentQuestionData, setCurrentQuestionData] = useState({
     category: "placeholder",
     correct_answer: "placeholder",
@@ -98,10 +101,24 @@ const GameLobby = () => {
    } 
    */
 
+    // Get host id
+    get(currentRoomRef)
+      .then((room) => {
+        if (room) {
+          console.log(room.val());
+          console.log("Host UID: ", room.val().hostUID);
+          setHostUID(room.val().hostUID);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     // Check for connecting and disconnecting players
     onValue(currentRoomRef, (room) => {
       const roomData = room.val();
-      console.log("Change in data: ", roomData);
       setConnectedPlayers(roomData.playerList);
     });
 
@@ -120,9 +137,18 @@ const GameLobby = () => {
         },,
       } */
       setScores(scoreData);
-      console.log("Change in score data: ", scoreData);
     });
   }, []);
+
+  useEffect(() => {
+    // if the host disconnects, delete the room and questions
+    if (auth.currentUser.uid === hostUID) {
+      console.log("You are the host");
+      const questionsRef = ref(database, `questions/${roomKey}`);
+      onDisconnect(currentRoomRef).remove(currentRoomRef);
+      onDisconnect(questionsRef).remove(questionsRef);
+    }
+  }, [hostUID]);
 
   const increaseScore = () => {
     const userScoreRef = ref(
@@ -139,7 +165,7 @@ const GameLobby = () => {
   }, [questionList]);
 
   useEffect(() => {
-    // do not trigger this on the first render
+    // do not trigger this on the first render so that the currentQuestionIndex starts at 0 when playing the game
     if (firstRender.current) {
       firstRender.current = false;
     } else {
@@ -181,23 +207,37 @@ const GameLobby = () => {
   };
 
   const getQuestions = () => {
+    /*
     axios
       .get("https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple")
       .then((res) => {
         setQuestionList(res.data.results);
         setCurrentQuestionIndex(0);
       });
-    /*
-      res.data.results -> Array
-      res.data.results[0] = {
-        category: str,
-        correct_answer: str,
-        difficulty: str, (Easy, Medium, Hard)
-        incorrect_answers: Array,
-        question: str,
-        type: str
-      }
-      */
+    */
+    const dbRef = ref(database);
+    get(child(dbRef, `questions/${roomKey}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          /* snapshot.val() -> Array 
+             snapshot.val()[0] = {
+              category: str,
+              correct_answer: str,
+              difficulty: str, (Easy, Medium, Hard)
+              incorrect_answers: Array,
+              question: str,
+              type: str
+            }
+          */
+          setQuestionList(snapshot.val());
+          setCurrentQuestionIndex(0);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const submitAnswer = (currentOptionsPosition) => {
@@ -225,6 +265,7 @@ const GameLobby = () => {
     <div className="App">
       <div>Name: {displayName}</div>
       <h3>Connected Players</h3>
+      <div>Note: When the host disconnects, the room is deleted.</div>
       <div>
         {Object.entries(connectedPlayers).map((player) => {
           // player = ['uid':'displayName']

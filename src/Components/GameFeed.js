@@ -34,10 +34,11 @@ const GameFeed = (props) => {
         <div>
           Players:
           <ol>
-            {Object.entries(room.playerList).map((player) => {
-              // player = ['uid':'displayName']
-              return <li key={player[0]}>{player[1]}</li>;
-            })}
+            {room.playerList &&
+              Object.entries(room.playerList).map((player) => {
+                // player = ['uid':'displayName']
+                return <li key={player[0]}>{player[1]}</li>;
+              })}
           </ol>
         </div>
         <button
