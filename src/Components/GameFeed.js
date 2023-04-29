@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { database } from "./firebase";
-import { set, ref, push, onChildAdded } from "firebase/database";
+import { database } from "../firebase";
+import { ref, onChildAdded } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 
 const GameFeed = (props) => {
@@ -43,7 +43,6 @@ const GameFeed = (props) => {
         <button
           onClick={() => {
             //`/room/${room.key}`
-            console.log("Room Key: ", room.key);
             navigate(`/room/${room.key}`);
           }}
         >

@@ -1,8 +1,8 @@
 import React from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "./firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
-class AuthForm extends React.Component {
+class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     // Initialise empty posts array in state to keep local state in sync with Firebase
@@ -14,17 +14,11 @@ class AuthForm extends React.Component {
     e.preventDefault();
     console.log(e);
     const email = e.target[0].value;
-    const displayName = e.target[1].value;
-    const password = e.target[2].value;
-    createUserWithEmailAndPassword(auth, email, password, displayName)
+    const password = e.target[1].value;
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        updateProfile(userCredential.user, {
-          displayName: displayName,
-        });
-        return displayName;
-      })
-      .then((displayName) => {
-        this.props.setDisplayName(displayName);
+        console.log(userCredential);
+        this.props.setDisplayName(userCredential.user.displayName);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -36,16 +30,14 @@ class AuthForm extends React.Component {
   render() {
     return (
       <div className="authform">
-        <h3>Register</h3>
+        <h3>Sign In</h3>
         <form onSubmit={this.handleAuthSubmit}>
           <div>Email: </div>
           <input type="email"></input>
-          <div>Display Name: </div>
-          <input type="text"></input>
           <div>Password: </div>
           <input type="password"></input>
           <div>
-            <input type="submit" value="Register"></input>
+            <input type="submit" value="Login"></input>
           </div>
         </form>
       </div>
@@ -53,4 +45,4 @@ class AuthForm extends React.Component {
   }
 }
 
-export default AuthForm;
+export default LoginForm;

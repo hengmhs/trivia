@@ -1,14 +1,13 @@
 import React from "react";
-import "./App.css";
+import "../App.css";
 import Quiz from "./Quiz";
 import AuthForm from "./AuthForm";
 import LoginForm from "./LoginForm";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import he from "he";
-import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { database } from "./firebase";
+import { database, auth } from "../firebase";
 import { set, ref, push, onChildAdded } from "firebase/database";
 import GameFeed from "./GameFeed.js";
 
