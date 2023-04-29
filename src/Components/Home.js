@@ -7,8 +7,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { database, auth } from "../firebase";
 import { set, ref, push } from "firebase/database";
 import GameFeed from "./GameFeed.js";
+import axios from "axios";
 
 const DB_ROOM_KEY = "rooms";
+const DB_QUESTIONS_KEY = "questions";
 
 const Home = () => {
   const [displayName, setDisplayName] = useState("None");
@@ -32,12 +34,21 @@ const Home = () => {
     set(newRoomRef, {
       roomName: roomName,
       gameStarted: false,
-      questionData: "placeholder",
       hostUID: auth.currentUser.uid,
       hostDisplayName: auth.currentUser.displayName,
       playerList: { [auth.currentUser.uid]: auth.currentUser.displayName },
     });
+    axios
+      .get("https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple")
+      .then((res) => {
+        const questionsRef = ref(
+          database,
+          `${DB_QUESTIONS_KEY}/${newRoomRef.key}`
+        );
+        set(questionsRef, res.data.results);
+      });
   };
+
   return (
     <div className="App">
       <div>Name: {displayName}</div>

@@ -36,7 +36,6 @@ const GameLobby = () => {
   });
   const [currentOptions, setCurrentOptions] = useState(["A", "B", "C", "D"]);
   const [currentAnswer, setCurrentAnswer] = useState(null);
-  const [score, setScore] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [questionList, setQuestionList] = useState([
     {
@@ -248,8 +247,6 @@ const GameLobby = () => {
         </div>
         {true && (
           <Quiz
-            displayName={displayName}
-            score={score}
             currentQuestionData={currentQuestionData}
             getQuestions={getQuestions}
             submitAnswer={submitAnswer}

@@ -5,8 +5,6 @@ const Quiz = (props) => {
   return (
     <div>
       <div>Trivia Quiz</div>
-      <div>Name: {props.displayName}</div>
-      <div>Score: {props.score}</div>
       <div>Q: {he.decode(props.currentQuestionData.question)}</div>
       <button onClick={props.getQuestions}>Get Question</button>
       <div>
