@@ -1,6 +1,4 @@
-# Rocket Academy Coding Bootcamp: Instagram
-
-https://bc.rocketacademy.co/2-full-stack/2.e-exercises/2.e.1-instagram-chat
+# Rocket Academy Coding Bootcamp: Project 2
 
 ## Available Scripts
 
