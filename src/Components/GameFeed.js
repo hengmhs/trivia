@@ -16,7 +16,6 @@ const GameFeed = (props) => {
           key: data.key,
           roomName: data.val().roomName,
           gameStarted: false,
-          questionData: "placeholder",
           hostUID: data.val().hostUID,
           hostDisplayName: data.val().hostDisplayName,
           playerList: data.val().playerList,

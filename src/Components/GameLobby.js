@@ -15,6 +15,7 @@ import {
 } from "firebase/database";
 import { useParams } from "react-router-dom";
 import he from "he";
+import { useNavigate } from "react-router-dom";
 
 // Objective: Users can join room via the React Router Link, and can increment/decrement counters
 
@@ -51,6 +52,7 @@ const GameLobby = () => {
     },
   ]);
   const firstRender = useRef(true);
+  const navigate = useNavigate();
 
   // get the room key from the URL, params refers to path="/room/:roomKey"
   const { roomKey } = useParams();
@@ -59,74 +61,79 @@ const GameLobby = () => {
 
   // componentDidMount
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setDisplayName(user.displayName);
-        setUserUID(user.uid);
-
-        // create user id in rooms/roomKey/playerList
-        const connectedPlayerRef = ref(
-          database,
-          `${DB_ROOM_KEY}/${roomKey}/playerList/${user.uid}`
-        );
-        set(connectedPlayerRef, user.displayName);
-        onDisconnect(connectedPlayerRef).remove(connectedPlayerRef);
-
-        // create user id with score card in scores/roomKey
-        const scoreRef = ref(
-          database,
-          `${DB_SCORE_KEY}/${roomKey}/${user.uid}`
-        );
-        set(scoreRef, {
-          displayName: user.displayName,
-          score: 0,
-        });
-        onDisconnect(scoreRef).remove(scoreRef);
+    const dbRef = ref(database, `${DB_ROOM_KEY}`);
+    get(dbRef).then((snapshot) => {
+      console.log("Does the room exist:", snapshot.child(roomKey).exists());
+      if (!snapshot.child(roomKey).exists()) {
+        console.log("Room doesnt exist");
+        navigate("/invalid");
       } else {
-        console.log("No one is logged in");
-        // User is signed out
-      }
-    });
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            setDisplayName(user.displayName);
+            setUserUID(user.uid);
 
-    /*
+            // create user id in rooms/roomKey/playerList
+            const connectedPlayerRef = ref(
+              database,
+              `${DB_ROOM_KEY}/${roomKey}/playerList/${user.uid}`
+            );
+            set(connectedPlayerRef, user.displayName);
+            onDisconnect(connectedPlayerRef).remove(connectedPlayerRef);
+
+            // create user id with score card in scores/roomKey
+            const scoreRef = ref(
+              database,
+              `${DB_SCORE_KEY}/${roomKey}/${user.uid}`
+            );
+            set(scoreRef, {
+              displayName: user.displayName,
+              score: 0,
+            });
+            onDisconnect(scoreRef).remove(scoreRef);
+          } else {
+            console.log("No one is logged in");
+            // User is signed out
+          }
+        });
+
+        /*
    room = {
     gameStarted: false,
     hostDisplayName: str,
     hostUID: str,
     playerList: {playerUID: displayName,
                  playerUID2: displayName2},
-    questionData: {},
     roomName: str,
-    score: int
    } 
    */
 
-    // Get host id
-    get(currentRoomRef)
-      .then((room) => {
-        if (room) {
-          console.log(room.val());
-          console.log("Host UID: ", room.val().hostUID);
-          setHostUID(room.val().hostUID);
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+        // Get host id
+        get(currentRoomRef)
+          .then((room) => {
+            if (room) {
+              console.log(room.val());
+              console.log("Host UID: ", room.val().hostUID);
+              setHostUID(room.val().hostUID);
+            } else {
+              console.log("No data available");
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
 
-    // Check for connecting and disconnecting players
-    onValue(currentRoomRef, (room) => {
-      const roomData = room.val();
-      setConnectedPlayers(roomData.playerList);
-    });
+        // Check for connecting and disconnecting players
+        onValue(currentRoomRef, (room) => {
+          const roomData = room.val();
+          setConnectedPlayers(roomData.playerList);
+        });
 
-    // Check for changing player scores
-    const currentScoreRef = ref(database, `${DB_SCORE_KEY}/${roomKey}`);
-    onValue(currentScoreRef, (score) => {
-      const scoreData = score.val();
-      /* scoreData = {
+        // Check for changing player scores
+        const currentScoreRef = ref(database, `${DB_SCORE_KEY}/${roomKey}`);
+        onValue(currentScoreRef, (score) => {
+          const scoreData = score.val();
+          /* scoreData = {
         uid: {
           displayName: str,
           score: int,
@@ -136,17 +143,23 @@ const GameLobby = () => {
           score: int,
         },,
       } */
-      setScores(scoreData);
+          setScores(scoreData);
+        });
+      }
     });
   }, []);
 
   useEffect(() => {
     // if the host disconnects, delete the room and questions
-    if (auth.currentUser.uid === hostUID) {
-      console.log("You are the host");
-      const questionsRef = ref(database, `questions/${roomKey}`);
-      onDisconnect(currentRoomRef).remove(currentRoomRef);
-      onDisconnect(questionsRef).remove(questionsRef);
+
+    // check for the existence of hostUID so this doesn't trigger when a user navigates to a room that doesn't exist
+    if (hostUID) {
+      if (auth.currentUser.uid === hostUID) {
+        console.log("You are the host");
+        const questionsRef = ref(database, `questions/${roomKey}`);
+        onDisconnect(currentRoomRef).remove(currentRoomRef);
+        onDisconnect(questionsRef).remove(questionsRef);
+      }
     }
   }, [hostUID]);
 
