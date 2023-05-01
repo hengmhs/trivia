@@ -28,7 +28,7 @@ const GameLobby = () => {
   const [connectedPlayers, setConnectedPlayers] = useState({});
   const [scores, setScores] = useState({ placeholder: 0 });
   const [userUID, setUserUID] = useState("");
-  const [quizText, setQuizText] = useState("Waiting for Question");
+  const [quizText, setQuizText] = useState("");
   const [hostUID, setHostUID] = useState("");
   const [currentQuestionData, setCurrentQuestionData] = useState({
     category: "placeholder",
@@ -41,6 +41,7 @@ const GameLobby = () => {
   const [currentOptions, setCurrentOptions] = useState(["A", "B", "C", "D"]);
   const [currentAnswer, setCurrentAnswer] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [gameStarted, setGameStarted] = useState(false);
   const [questionList, setQuestionList] = useState([
     {
       category: "placeholder",
@@ -63,9 +64,8 @@ const GameLobby = () => {
   useEffect(() => {
     const dbRef = ref(database, `${DB_ROOM_KEY}`);
     get(dbRef).then((snapshot) => {
-      console.log("Does the room exist:", snapshot.child(roomKey).exists());
+      // if the room doesn't exist, navigate user to invalid room error page
       if (!snapshot.child(roomKey).exists()) {
-        console.log("Room doesnt exist");
         navigate("/invalid");
       } else {
         onAuthStateChanged(auth, (user) => {
@@ -112,8 +112,6 @@ const GameLobby = () => {
         get(currentRoomRef)
           .then((room) => {
             if (room) {
-              console.log(room.val());
-              console.log("Host UID: ", room.val().hostUID);
               setHostUID(room.val().hostUID);
             } else {
               console.log("No data available");
@@ -124,9 +122,11 @@ const GameLobby = () => {
           });
 
         // Check for connecting and disconnecting players
+        // Check for whether the game has started
         onValue(currentRoomRef, (room) => {
           const roomData = room.val();
           setConnectedPlayers(roomData.playerList);
+          setGameStarted(roomData.gameStarted);
         });
 
         // Check for changing player scores
@@ -150,13 +150,14 @@ const GameLobby = () => {
   }, []);
 
   useEffect(() => {
+    // checks if the current user is the host
     // if the host disconnects, delete the room and questions
-
     // check for the existence of hostUID so this doesn't trigger when a user navigates to a room that doesn't exist
+    // (nonexistent rooms have no hostuid)
     if (hostUID) {
       if (auth.currentUser.uid === hostUID) {
         console.log("You are the host");
-        const questionsRef = ref(database, `questions/${roomKey}`);
+        const questionsRef = ref(database, `${DB_QUESTIONS_KEY}/${roomKey}`);
         onDisconnect(currentRoomRef).remove(currentRoomRef);
         onDisconnect(questionsRef).remove(questionsRef);
       }
@@ -274,16 +275,34 @@ const GameLobby = () => {
     }
   };
 
+  const startGame = () => {
+    const gameStartedRef = ref(
+      database,
+      `${DB_ROOM_KEY}/${roomKey}/gameStarted`
+    );
+    // set gameStarted in firebase
+    set(gameStartedRef, true);
+  };
+
+  // when the game starts, load the questions
+  useEffect(() => {
+    if (gameStarted === true) {
+      getQuestions();
+    }
+  }, [gameStarted]);
+
   return (
     <div className="App">
       <div>Name: {displayName}</div>
       <h3>Connected Players</h3>
-      <div>Note: When the host disconnects, the room is deleted.</div>
       <div>
         {Object.entries(connectedPlayers).map((player) => {
           // player = ['uid':'displayName']
           return <li key={player[0]}>{player[1]}</li>;
         })}
+      </div>
+      <div>
+        <i>Note: When the host disconnects, the room is deleted.</i>
       </div>
       <div>
         <h3>Scores: </h3>
@@ -299,17 +318,16 @@ const GameLobby = () => {
             );
           })}
         </div>
-        {true && (
-          <Quiz
-            currentQuestionData={currentQuestionData}
-            getQuestions={getQuestions}
-            submitAnswer={submitAnswer}
-            currentOptions={currentOptions}
-            quizText={quizText}
-          />
-        )}
+        <Quiz
+          currentQuestionData={currentQuestionData}
+          getQuestions={getQuestions}
+          submitAnswer={submitAnswer}
+          currentOptions={currentOptions}
+          quizText={quizText}
+          gameStarted={gameStarted}
+        />
       </div>
-      <button onClick={increaseScore}>Increase My Score</button>
+      {!gameStarted && <button onClick={startGame}>Start Game</button>}
     </div>
   );
 };
