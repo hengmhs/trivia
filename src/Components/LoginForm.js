@@ -25,7 +25,7 @@ function LoginForm() {
 
     await login(email, password)
       .then((res) => {
-        navigate("/main");
+        navigate("/home");
       })
       .catch((err) => {
         setError(err.toString());
