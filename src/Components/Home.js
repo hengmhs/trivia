@@ -1,9 +1,7 @@
 import React from "react";
 import "../App.css";
-import AuthForm from "./AuthForm";
-import LoginForm from "./LoginForm";
-import { useState, useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import Navbar from "./Navbar";
+import { useEffect } from "react";
 import { database, auth } from "../firebase";
 import { set, ref, push } from "firebase/database";
 import GameFeed from "./GameFeed.js";
@@ -13,17 +11,8 @@ const DB_ROOM_KEY = "rooms";
 const DB_QUESTIONS_KEY = "questions";
 
 const Home = () => {
-  const [displayName, setDisplayName] = useState("None");
-
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setDisplayName(user.displayName);
-      } else {
-        console.log("No one is logged in");
-        // User is signed out
-      }
-    });
+    document.title = "Main | Trivia Game";
   }, []);
 
   const createRoom = (e) => {
@@ -51,26 +40,20 @@ const Home = () => {
 
   return (
     <div className="App">
-      <div>Name: {displayName}</div>
       <div>
-        {true && <AuthForm setDisplayName={setDisplayName} />}
-        <LoginForm setDisplayName={setDisplayName} />
+        <Navbar />
       </div>
-      <div className="login-info">
-        <div>email: user@test.com</div>
-        <div>pwd: test123</div>
+      <br />
+      <div>
+        <h1>Create Room</h1>
+        <form onSubmit={createRoom}>
+          <div>Room Name:</div>
+          <input type="text"></input>
+          <input type="submit" value="Create Room"></input>
+        </form>
+        <br />
+        <GameFeed DB_ROOM_KEY={DB_ROOM_KEY} />
       </div>
-      <div className="login-info">
-        <div>email: user2@test.com</div>
-        <div>pwd: test123</div>
-      </div>
-      <h1>Create Room</h1>
-      <form onSubmit={createRoom}>
-        <div>Room Name:</div>
-        <input type="text"></input>
-        <input type="submit" value="Create Room"></input>
-      </form>
-      <GameFeed DB_ROOM_KEY={DB_ROOM_KEY} />
     </div>
   );
 };
