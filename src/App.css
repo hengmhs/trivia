@@ -24,3 +24,33 @@ body {
   margin: 1em;
   outline: white solid 1px;
 }
+
+.auth-ctn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px whitesmoke;
+  margin: auto;
+  width: fit-content;
+  padding: 20px;
+}
+
+.enter-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-btn {
+  padding: 5px 20px;
+}
