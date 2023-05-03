@@ -28,31 +28,8 @@ const GameLobby = () => {
   const [connectedPlayers, setConnectedPlayers] = useState({});
   const [scores, setScores] = useState({ placeholder: 0 });
   const [userUID, setUserUID] = useState("");
-  const [quizText, setQuizText] = useState("");
   const [hostUID, setHostUID] = useState("");
-  const [currentQuestionData, setCurrentQuestionData] = useState({
-    category: "placeholder",
-    correct_answer: "placeholder",
-    difficulty: "placeholder",
-    incorrect_answers: "placeholder",
-    question: "placeholder",
-    type: "placeholder",
-  });
-  const [currentOptions, setCurrentOptions] = useState(["A", "B", "C", "D"]);
-  const [currentAnswer, setCurrentAnswer] = useState(null);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
-  const [questionList, setQuestionList] = useState([
-    {
-      category: "placeholder",
-      correct_answer: "placeholder",
-      difficulty: "placeholder",
-      incorrect_answers: ["placeholder", "placeholder", "placeholder"],
-      question: "placeholder",
-      type: "placeholder",
-    },
-  ]);
-  const firstRender = useRef(true);
   const navigate = useNavigate();
 
   // get the room key from the URL, params refers to path="/room/:roomKey"
@@ -70,6 +47,7 @@ const GameLobby = () => {
       } else {
         onAuthStateChanged(auth, (user) => {
           if (user) {
+            // TODO: replace with Auth
             setDisplayName(user.displayName);
             setUserUID(user.uid);
 
@@ -164,117 +142,6 @@ const GameLobby = () => {
     }
   }, [hostUID]);
 
-  const increaseScore = () => {
-    const userScoreRef = ref(
-      database,
-      `${DB_SCORE_KEY}/${roomKey}/${userUID}/score`
-    );
-    runTransaction(userScoreRef, (score) => {
-      return score + 1;
-    });
-  };
-
-  useEffect(() => {
-    loadQuestion(0);
-  }, [questionList]);
-
-  useEffect(() => {
-    // do not trigger this on the first render so that the currentQuestionIndex starts at 0 when playing the game
-    if (firstRender.current) {
-      firstRender.current = false;
-    } else {
-      console.log("Question Index: ", currentQuestionIndex);
-      if (currentQuestionIndex < questionList.length) {
-        loadQuestion(currentQuestionIndex);
-      } else {
-        console.log("Game Over, Restarting");
-      }
-    }
-  }, [currentQuestionIndex]);
-
-  useEffect(() => {
-    // use the he module to decode the HTML response from the API
-    setCurrentAnswer(he.decode(currentQuestionData.correct_answer));
-    const options = [
-      ...currentQuestionData.incorrect_answers,
-      currentQuestionData.correct_answer,
-    ];
-    // Durstenfeld Shuffle from Stack Overflow: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-    const shuffleArray = (array) => {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    };
-    setCurrentOptions(
-      shuffleArray(
-        options.map((option) => {
-          return he.decode(option);
-        })
-      )
-    );
-  }, [currentQuestionData]);
-
-  const loadQuestion = (questionListIndex) => {
-    setCurrentQuestionData(questionList[questionListIndex]);
-  };
-
-  const getQuestions = () => {
-    /*
-    axios
-      .get("https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple")
-      .then((res) => {
-        setQuestionList(res.data.results);
-        setCurrentQuestionIndex(0);
-      });
-    */
-    const dbRef = ref(database);
-    get(child(dbRef, `questions/${roomKey}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          /* snapshot.val() -> Array 
-             snapshot.val()[0] = {
-              category: str,
-              correct_answer: str,
-              difficulty: str, (Easy, Medium, Hard)
-              incorrect_answers: Array,
-              question: str,
-              type: str
-            }
-          */
-          setQuestionList(snapshot.val());
-          setCurrentQuestionIndex(0);
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  const submitAnswer = (currentOptionsPosition) => {
-    const userAnswer = currentOptions[currentOptionsPosition];
-    console.log(userAnswer);
-    if (currentQuestionIndex === questionList.length) {
-      setQuizText(`Game Over.`);
-      return;
-    }
-    if (currentAnswer === userAnswer) {
-      setQuizText(`Correct! ${currentAnswer} was the answer.`);
-      increaseScore();
-      setCurrentQuestionIndex((currentQuestionIndex) => {
-        return currentQuestionIndex + 1;
-      });
-    } else {
-      setQuizText(`Wrong, the correct answer was: ${currentAnswer}`);
-      setCurrentQuestionIndex((currentQuestionIndex) => {
-        return currentQuestionIndex + 1;
-      });
-    }
-  };
-
   const startGame = () => {
     const gameStartedRef = ref(
       database,
@@ -283,13 +150,6 @@ const GameLobby = () => {
     // set gameStarted in firebase
     set(gameStartedRef, true);
   };
-
-  // when the game starts, load the questions
-  useEffect(() => {
-    if (gameStarted === true) {
-      getQuestions();
-    }
-  }, [gameStarted]);
 
   return (
     <div className="App">
@@ -319,12 +179,10 @@ const GameLobby = () => {
           })}
         </div>
         <Quiz
-          currentQuestionData={currentQuestionData}
-          getQuestions={getQuestions}
-          submitAnswer={submitAnswer}
-          currentOptions={currentOptions}
-          quizText={quizText}
           gameStarted={gameStarted}
+          roomKey={roomKey}
+          DB_SCORE_KEY={DB_SCORE_KEY}
+          userUID={userUID}
         />
       </div>
       {!gameStarted && <button onClick={startGame}>Start Game</button>}
