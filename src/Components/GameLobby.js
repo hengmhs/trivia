@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 const DB_ROOM_KEY = "rooms";
 const DB_SCORE_KEY = "scores";
 const DB_QUESTIONS_KEY = "questions";
+const DB_GAME_OVER_KEY = "gameOver";
 
 const GameLobby = () => {
   const [displayName, setDisplayName] = useState("None");
@@ -69,6 +70,16 @@ const GameLobby = () => {
               score: 0,
             });
             onDisconnect(scoreRef).remove(scoreRef);
+
+            // create user id in gameOver/roomKey
+            const gameOverRef = ref(
+              database,
+              `${DB_GAME_OVER_KEY}/${roomKey}/${user.uid}`
+            );
+            set(gameOverRef, {
+              displayName: user.displayName,
+              gameOver: false,
+            });
           } else {
             console.log("No one is logged in");
             // User is signed out
@@ -182,6 +193,7 @@ const GameLobby = () => {
           gameStarted={gameStarted}
           roomKey={roomKey}
           DB_SCORE_KEY={DB_SCORE_KEY}
+          DB_GAME_OVER_KEY={DB_GAME_OVER_KEY}
           userUID={userUID}
         />
       </div>

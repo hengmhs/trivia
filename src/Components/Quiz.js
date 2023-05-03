@@ -17,7 +17,7 @@ const Quiz = (props) => {
   const [currentOptions, setCurrentOptions] = useState(["A", "B", "C", "D"]);
   const [currentAnswer, setCurrentAnswer] = useState(null);
   const [quizText, setQuizText] = useState("");
-
+  const [isAllGameOver, setIsAllGameOver] = useState(false);
   const [questionList, setQuestionList] = useState([
     {
       category: "placeholder",
@@ -40,6 +40,10 @@ const Quiz = (props) => {
     type: "placeholder",
   });
 
+  const gameOverRef = ref(
+    database,
+    `${props.DB_GAME_OVER_KEY}/${props.roomKey}/${props.userUID}`
+  );
   // when the game starts, load the questions
   useEffect(() => {
     if (props.gameStarted === true) {
@@ -135,12 +139,17 @@ const Quiz = (props) => {
     });
   };
 
+  const submitGameOver = () => {
+    set(gameOverRef, {
+      gameOver: true,
+    });
+  };
+
   const submitAnswer = (currentOptionsPosition) => {
     const userAnswer = currentOptions[currentOptionsPosition];
     console.log(userAnswer);
-    if (currentQuestionIndex === questionList.length) {
-      setQuizText(`Game Over.`);
-      return;
+    if (currentQuestionIndex >= questionList.length - 1) {
+      submitGameOver();
     }
     if (currentAnswer === userAnswer) {
       setQuizText(`Correct! ${currentAnswer} was the answer.`);
@@ -155,6 +164,26 @@ const Quiz = (props) => {
       });
     }
   };
+
+  const allGameOverRef = ref(
+    database,
+    `${props.DB_GAME_OVER_KEY}/${props.roomKey}`
+  );
+  onValue(allGameOverRef, (gameOverData) => {
+    console.log("gameOverData: ", gameOverData.val());
+    let allPlayersGameOver = true;
+    Object.entries(gameOverData.val()).map((playerGameOver) => {
+      // playerGameOver = [userUID, {displayName: str, gameOver: bool}]
+      // if any player has gameOver = false, then allPlayersGameOver will be false
+      if (!playerGameOver[1].gameOver) {
+        allPlayersGameOver = false;
+      }
+    });
+    // this will loop infinitely without !isAllGameOver
+    if (allPlayersGameOver && !isAllGameOver) {
+      setIsAllGameOver(true);
+    }
+  });
 
   return (
     <div>
@@ -201,9 +230,10 @@ const Quiz = (props) => {
               D: {currentOptions[3]}
             </button>
           </div>
-          <div>{quizText}</div>
         </div>
       )}
+      <div>{quizText}</div>
+      <div>{isAllGameOver && <h1>All Game Over</h1>}</div>
     </div>
   );
 };
