@@ -6,6 +6,7 @@ import { database, auth } from "../firebase";
 import { set, ref, push } from "firebase/database";
 import GameFeed from "./GameFeed.js";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const DB_ROOM_KEY = "rooms";
 const DB_QUESTIONS_KEY = "questions";
@@ -14,6 +15,7 @@ const Home = () => {
   useEffect(() => {
     document.title = "Main | Trivia Game";
   }, []);
+  const navigate = useNavigate();
 
   const createRoom = (e) => {
     e.preventDefault();
@@ -35,6 +37,9 @@ const Home = () => {
           `${DB_QUESTIONS_KEY}/${newRoomRef.key}`
         );
         set(questionsRef, res.data.results);
+      })
+      .then(() => {
+        navigate(`/room/${newRoomRef.key}`);
       });
   };
 
