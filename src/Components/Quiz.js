@@ -10,6 +10,7 @@ import {
   get,
 } from "firebase/database";
 import { database } from "../firebase";
+import GameOverScreen from "./GameOverScreen.js";
 
 const Quiz = (props) => {
   const firstRender = useRef(true);
@@ -199,7 +200,10 @@ const Quiz = (props) => {
       )}
       {props.gameStarted && !isSingleGameOver && (
         <div>
-          <div>Q: {he.decode(currentQuestionData.question)}</div>
+          <div>
+            Q. {currentQuestionIndex + 1}/5:{" "}
+            {he.decode(currentQuestionData.question)}
+          </div>
           <div>
             <button
               className="option-btn"
@@ -238,11 +242,8 @@ const Quiz = (props) => {
       )}
       <div>{quizText}</div>
       <div>
-        {!isAllGameOver && isSingleGameOver && (
-          <h3>Waiting for other players...</h3>
-        )}
+        {isSingleGameOver && <GameOverScreen isAllGameOver={isAllGameOver} />}
       </div>
-      <div>{isAllGameOver && <h1>Game Over</h1>}</div>
     </div>
   );
 };
