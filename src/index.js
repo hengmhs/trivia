@@ -7,6 +7,7 @@ import InvalidRoom from "./Components/InvalidRoom";
 import Enter from "./Components/Enter";
 import LoginForm from "./Components/LoginForm";
 import RegisterForm from "./Components/RegisterForm";
+import SessionError from "./Components/SessionError";
 import Profile from "./Components/Profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
@@ -19,6 +20,7 @@ root.render(
         <Route path="/" element={<Enter />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
+        <Route path="/sessionerror" element={<SessionError />} />
         <Route path="/home" element={<Home />} />
         <Route path="/profile/:uid" element={<Profile />} />
         <Route path="/invalid" element={<InvalidRoom />} />
