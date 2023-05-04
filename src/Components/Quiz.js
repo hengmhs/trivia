@@ -242,7 +242,13 @@ const Quiz = (props) => {
       )}
       <div>{quizText}</div>
       <div>
-        {isSingleGameOver && <GameOverScreen isAllGameOver={isAllGameOver} />}
+        {isSingleGameOver && (
+          <GameOverScreen
+            isAllGameOver={isAllGameOver}
+            roomKey={props.roomKey}
+            scores={props.scores}
+          />
+        )}
       </div>
     </div>
   );

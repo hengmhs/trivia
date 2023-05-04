@@ -187,6 +187,7 @@ const GameLobby = () => {
           DB_SCORE_KEY={DB_SCORE_KEY}
           DB_GAME_OVER_KEY={DB_GAME_OVER_KEY}
           userUID={userUID}
+          scores={scores}
         />
       </div>
       {!gameStarted && <button onClick={startGame}>Start Game</button>}
