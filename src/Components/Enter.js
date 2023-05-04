@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 import LoginError from "./LoginError";
 import QuantumLogo from "../images/QuantumLogo.png";
+import Button from "@mui/material/Button";
 
 function Enter() {
   const { user } = useContext(AuthContext);
@@ -24,10 +25,10 @@ function Enter() {
           {!user ? <LoginError /> : null}
           <div className="enter-btns">
             <Link to="/login">
-              <button className="auth-btn">LOGIN</button>
+              <Button variant="contained">Login</Button>
             </Link>
             <Link to="/register">
-              <button className="auth-btn">REGISTER</button>
+              <Button variant="outlined">Register</Button>
             </Link>
           </div>
         </div>
