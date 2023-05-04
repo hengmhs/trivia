@@ -65,7 +65,8 @@ body {
 }
 
 .stars2 {
-  z-index: -2;
+  z-index: -999;
+  position: absolute;
   animation: animateStar 100s linear infinite;
   background: transparent;
   box-shadow: 51vw 80vh #fff, 51vw 180vh #fff, 42vw 42vh #fff, 42vw 142vh #fff,
@@ -98,7 +99,8 @@ body {
 }
 
 .stars3 {
-  z-index: -1;
+  z-index: -999;
+  position: absolute;
   animation: animateStar 150s linear infinite;
   background: transparent;
   box-shadow: 34vw 26vh #fff, 34vw 126vh #fff, 11vw 92vh #fff, 11vw 192vh #fff,
