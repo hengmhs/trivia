@@ -11,20 +11,25 @@ import SessionError from "./Components/SessionError";
 import Profile from "./Components/Profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
+import PrivateRoute from "./Components/PrivateRoute";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <AuthProvider>
       <Routes>
+        {/* Public routes: */}
         <Route path="/" element={<Enter />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/sessionerror" element={<SessionError />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/profile/:uid" element={<Profile />} />
-        <Route path="/invalid" element={<InvalidRoom />} />
-        <Route path="/room/:roomKey" element={<GameLobby />} />
+        {/* Private routes: */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/profile/:uid" element={<Profile />} />
+          <Route path="/invalid" element={<InvalidRoom />} />
+          <Route path="/room/:roomKey" element={<GameLobby />} />
+        </Route>
       </Routes>
     </AuthProvider>
   </BrowserRouter>
