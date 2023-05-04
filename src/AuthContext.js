@@ -8,18 +8,20 @@ import {
   updatePassword,
 } from "firebase/auth";
 import { auth } from "./firebase";
+import { useSessionStorage } from "./useSessionStorage";
 
 // Create auth context
 export const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useSessionStorage("currentUser", null);
 
   // Listen for user auth state changes
   useEffect(() => {
     const currentUser = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
+      console.log(authUser);
     });
     return currentUser;
   }, []);
