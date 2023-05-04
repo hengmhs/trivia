@@ -12,7 +12,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,13 +23,17 @@ function LoginForm() {
     e.preventDefault();
     setError();
 
-    await login(email, password)
-      .then((res) => {
-        navigate("/home");
-      })
-      .catch((err) => {
-        setError(err.toString());
-      });
+    if (user) {
+      navigate("/sessionerror");
+    } else {
+      await login(email, password)
+        .then((res) => {
+          navigate("/home");
+        })
+        .catch((err) => {
+          setError(err.toString());
+        });
+    }
   };
 
   return (
