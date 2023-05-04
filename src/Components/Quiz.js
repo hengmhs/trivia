@@ -5,19 +5,21 @@ import {
   set,
   ref,
   onValue,
-  onDisconnect,
   runTransaction,
   child,
   get,
 } from "firebase/database";
-import { database, auth } from "../firebase";
+import { database } from "../firebase";
 
 const Quiz = (props) => {
   const firstRender = useRef(true);
   const [currentOptions, setCurrentOptions] = useState(["A", "B", "C", "D"]);
   const [currentAnswer, setCurrentAnswer] = useState(null);
   const [quizText, setQuizText] = useState("");
+  // The game over status for ALL players
   const [isAllGameOver, setIsAllGameOver] = useState(false);
+  // The game over status for just this single player
+  const [isSingleGameOver, setIsSingleGameOver] = useState(false);
   const [questionList, setQuestionList] = useState([
     {
       category: "placeholder",
@@ -143,6 +145,7 @@ const Quiz = (props) => {
     set(gameOverRef, {
       gameOver: true,
     });
+    setIsSingleGameOver(true);
   };
 
   const submitAnswer = (currentOptionsPosition) => {
@@ -150,6 +153,7 @@ const Quiz = (props) => {
     console.log(userAnswer);
     if (currentQuestionIndex >= questionList.length - 1) {
       submitGameOver();
+      setIsSingleGameOver(true);
     }
     if (currentAnswer === userAnswer) {
       setQuizText(`Correct! ${currentAnswer} was the answer.`);
@@ -193,7 +197,7 @@ const Quiz = (props) => {
           <div>Waiting for the game to start</div>
         </div>
       )}
-      {props.gameStarted && (
+      {props.gameStarted && !isSingleGameOver && (
         <div>
           <div>Q: {he.decode(currentQuestionData.question)}</div>
           <div>
@@ -233,7 +237,12 @@ const Quiz = (props) => {
         </div>
       )}
       <div>{quizText}</div>
-      <div>{isAllGameOver && <h1>All Game Over</h1>}</div>
+      <div>
+        {!isAllGameOver && isSingleGameOver && (
+          <h3>Waiting for other players...</h3>
+        )}
+      </div>
+      <div>{isAllGameOver && <h1>Game Over</h1>}</div>
     </div>
   );
 };

@@ -1,20 +1,11 @@
 import React from "react";
 import "../App.css";
 import Quiz from "./Quiz";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { database, auth } from "../firebase";
-import {
-  set,
-  ref,
-  onValue,
-  onDisconnect,
-  runTransaction,
-  child,
-  get,
-} from "firebase/database";
+import { set, ref, onValue, onDisconnect, get } from "firebase/database";
 import { useParams } from "react-router-dom";
-import he from "he";
 import { useNavigate } from "react-router-dom";
 
 // Objective: Users can join room via the React Router Link, and can increment/decrement counters
@@ -80,6 +71,7 @@ const GameLobby = () => {
               displayName: user.displayName,
               gameOver: false,
             });
+            onDisconnect(gameOverRef).remove(gameOverRef);
           } else {
             console.log("No one is logged in");
             // User is signed out
