@@ -6,7 +6,8 @@ body {
 
 /* Star Design from https://codepen.io/Glucio/pen/BoLWPo */
 .stars {
-  z-index: 999;
+  z-index: -999;
+  position: absolute;
   animation: animateStar 30s linear infinite;
   background: transparent;
   box-shadow: 8vw 20vh #fff, 8vw 120vh #fff, 7vw 72vh #fff, 7vw 172vh #fff,
@@ -64,7 +65,7 @@ body {
 }
 
 .stars2 {
-  z-index: 998;
+  z-index: -2;
   animation: animateStar 100s linear infinite;
   background: transparent;
   box-shadow: 51vw 80vh #fff, 51vw 180vh #fff, 42vw 42vh #fff, 42vw 142vh #fff,
@@ -97,7 +98,7 @@ body {
 }
 
 .stars3 {
-  z-index: 997;
+  z-index: -1;
   animation: animateStar 150s linear infinite;
   background: transparent;
   box-shadow: 34vw 26vh #fff, 34vw 126vh #fff, 11vw 92vh #fff, 11vw 192vh #fff,
@@ -125,6 +126,12 @@ body {
   to {
     transform: translateY(-100vh);
   }
+}
+
+.logo {
+  width: 10vw;
+  height: 10vw;
+  opacity: 1;
 }
 
 .App {
@@ -165,7 +172,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: solid 1px whitesmoke;
   margin: auto;
   width: 60vw;
   padding: 20px;

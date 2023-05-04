@@ -5,6 +5,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 import LoginError from "./LoginError";
+import QuantumLogo from "../images/QuantumLogo.png";
 
 function Enter() {
   const { user } = useContext(AuthContext);
@@ -16,8 +17,10 @@ function Enter() {
       <div className="stars3"></div>
       <div className="App auth-ctn">
         <div className="auth">
-          <div>Logo goes here</div>
-          <h1>Trivia Game</h1>
+          <div>
+            <img src={QuantumLogo} alt="Quantum Quiz Logo" className="logo" />
+          </div>
+          <h1>Quantum Quiz</h1>
           {!user ? <LoginError /> : null}
           <div className="enter-btns">
             <Link to="/login">
