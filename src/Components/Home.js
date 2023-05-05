@@ -44,20 +44,19 @@ const Home = () => {
   };
 
   return (
-    <div className="App">
-      <div>
+    <div className="home-background">
+      <div className="App">
         <Navbar />
-      </div>
-      <br />
-      <div>
-        <h1>Create Room</h1>
-        <form onSubmit={createRoom}>
-          <div>Room Name:</div>
-          <input type="text"></input>
-          <input type="submit" value="Create Room"></input>
-        </form>
-        <br />
-        <GameFeed DB_ROOM_KEY={DB_ROOM_KEY} />
+        <div>
+          <h1>Create Room</h1>
+          <form onSubmit={createRoom}>
+            <div>Room Name:</div>
+            <input type="text"></input>
+            <input type="submit" value="Create Room"></input>
+          </form>
+          <br />
+          <GameFeed DB_ROOM_KEY={DB_ROOM_KEY} />
+        </div>
       </div>
     </div>
   );
