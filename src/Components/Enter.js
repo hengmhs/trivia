@@ -12,7 +12,7 @@ function Enter() {
   const { user } = useContext(AuthContext);
 
   return (
-    <div>
+    <div className="background">
       <div className="stars"></div>
       <div className="stars2"></div>
       <div className="stars3"></div>
