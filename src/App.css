@@ -1,5 +1,5 @@
 body {
-  background-color: red;
+  background-color: #090a0f;
 }
 
 .background {
@@ -172,16 +172,20 @@ body {
   height: 100vh;
 }
 
-.auth {
-  width: 100%;
+.login-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: auto;
-  width: 60vw;
-  padding: 20px;
-  margin: 0 10px;
+  width: 80vw;
+  max-width: 600px;
+  background-color: #020203;
+}
+
+.login-card-content {
+  padding: 2em;
+  width: 100%;
+  text-align: center;
 }
 
 .enter-btns {
@@ -201,10 +205,9 @@ body {
 }
 
 .auth-input {
-  padding: 10px;
   text-align: center;
   width: 80%;
-  font-size: 20px;
+  margin: 2em;
 }
 
 .error-msg {
@@ -214,7 +217,12 @@ body {
 .login-form,
 .register-form {
   width: 100%;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  margin-bottom: 2em;
 }
 
 .login-text {
@@ -223,15 +231,6 @@ body {
 
 .auth-link {
   color: cadetblue;
-}
-
-.login-btn,
-.register-btn {
-  color: whitesmoke;
-  background-color: cadetblue;
-  font-size: 20px;
-  padding: 10px 60px;
-  width: 85%;
 }
 
 .navbar-ctn {
@@ -318,4 +317,19 @@ body {
 .nav-logo {
   width: 3em;
   height: 3em;
+}
+
+.login-card-header {
+  margin: 0;
+  background-image: url("./images/NASA.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 1em 1em 1em 1em;
+  width: calc(100% - 2em);
+  text-align: center;
+}
+
+.login-card-header-text {
+  text-shadow: 0.1em 0.1em 0.1em rgb(20, 20, 20);
 }
