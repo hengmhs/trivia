@@ -234,8 +234,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px;
-  font-size: 16px;
+  padding: 1em;
+  background-color: #131313;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3em 8em;
 }
 
 .navbar-left {
@@ -268,8 +269,8 @@ body {
 }
 
 .avatar-nav {
-  width: 40px;
-  height: 40px;
+  width: 3.5em;
+  height: 3.5em;
 }
 
 .avatar-profile {
@@ -296,4 +297,21 @@ body {
   padding: 5px;
   text-align: center;
   width: 100%;
+}
+
+.avatar-nav {
+  border-radius: 50%;
+  cursor: pointer;
+  transition: box-shadow 1s;
+}
+
+.avatar-nav:hover {
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 0.15em #d5d3d3;
+}
+
+.nav-logo {
+  width: 3em;
+  height: 3em;
 }
