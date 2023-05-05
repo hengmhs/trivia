@@ -1,8 +1,8 @@
 // First page users see
 // Navigate to Login/Register page via buttons
 
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 import LoginError from "./LoginError";
 import QuantumLogo from "../images/QuantumLogo.png";
@@ -10,6 +10,13 @@ import Button from "@mui/material/Button";
 
 function Enter() {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  });
 
   return (
     <div>

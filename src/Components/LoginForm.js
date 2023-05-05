@@ -19,6 +19,12 @@ function LoginForm() {
     document.title = "Login | Trivia Game";
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  });
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError();

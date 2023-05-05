@@ -26,6 +26,12 @@ function RegisterForm() {
     document.title = "Register | Trivia Game";
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  });
+
   // useEffect(() => {
   //   onAuthStateChanged(auth, (user) => {
   //     if (user) {
