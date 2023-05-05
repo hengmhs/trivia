@@ -7,6 +7,8 @@ import { set, ref, push } from "firebase/database";
 import GameFeed from "./GameFeed.js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
+import Button from "@mui/material/Button";
 
 const DB_ROOM_KEY = "rooms";
 const DB_QUESTIONS_KEY = "questions";
@@ -47,14 +49,18 @@ const Home = () => {
     <div className="home-background">
       <div className="App">
         <Navbar />
-        <div>
-          <h1>Create Room</h1>
-          <form onSubmit={createRoom}>
-            <div>Room Name:</div>
-            <input type="text"></input>
-            <input type="submit" value="Create Room"></input>
-          </form>
-          <br />
+        <div className="home-content-container">
+          <div className="create-room-card">
+            <h1>Create Room</h1>
+            <form onSubmit={createRoom}>
+              <div className="create-room-form">
+                <TextField type="text" label="Room Name"></TextField>
+                <Button type="submit" variant="contained">
+                  Create Room
+                </Button>
+              </div>
+            </form>
+          </div>
           <GameFeed DB_ROOM_KEY={DB_ROOM_KEY} />
         </div>
       </div>

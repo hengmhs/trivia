@@ -11,6 +11,11 @@ h1 {
   font-family: "Raleway", sans-serif;
 }
 
+h3 {
+  font-family: "Raleway", sans-serif;
+  color: #d87014;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

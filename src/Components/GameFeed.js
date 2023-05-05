@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { database } from "../firebase";
 import { ref, onChildAdded } from "firebase/database";
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 const GameFeed = (props) => {
   const navigate = useNavigate();
@@ -26,35 +27,28 @@ const GameFeed = (props) => {
   let roomDisplay = openGameList.map((room) => {
     return (
       <div className="room-card" key={room.key}>
-        <div>
-          <b>{room.roomName}</b>
+        <div className="room-card-title">
+          <h3>{room.roomName}</h3>
         </div>
-        <div>Created by {room.hostDisplayName}</div>
+        <div>Host: {room.hostDisplayName}</div>
         <div>
-          Players:
-          <ol>
-            {room.playerList &&
-              Object.entries(room.playerList).map((player) => {
-                // player = ['uid':'displayName']
-                return <li key={player[0]}>{player[1]}</li>;
-              })}
-          </ol>
+          Players: {room.playerList && Object.entries(room.playerList).length}
         </div>
-        <button
+        <Button
           onClick={() => {
             //`/room/${room.key}`
             navigate(`/room/${room.key}`);
           }}
         >
           Join
-        </button>
+        </Button>
       </div>
     );
   });
   return (
-    <div>
+    <div className="game-feed-container">
       <h1>Game Feed</h1>
-      {roomDisplay}
+      <div className="room-display-container">{roomDisplay}</div>
     </div>
   );
 };
