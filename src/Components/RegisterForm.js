@@ -7,10 +7,11 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
-import { database, auth } from "../firebase";
+import { database } from "../firebase";
 import { ref as databaseRef, set } from "firebase/database";
 import { updateProfile } from "firebase/auth";
-import { onAuthStateChanged } from "firebase/auth";
+import { TextField } from "@mui/material";
+import Button from "@mui/material/Button";
 
 function RegisterForm() {
   const [displayName, setDisplayName] = useState("");
@@ -70,56 +71,71 @@ function RegisterForm() {
   };
 
   return (
-    <div className="App auth-ctn">
-      <div className="auth">
-        <h1>Register</h1>
-        {error && <p className="error-msg">Error: {error}</p>}
-        <form onSubmit={handleRegister} className="register-form">
-          <input
-            className="auth-input"
-            type="text"
-            placeholder="Username"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            required
-          />
-          <br />
-          <input
-            className="auth-input"
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <br />
-          <input
-            className="auth-input"
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <br />
-          <input
-            className="auth-input"
-            type="password"
-            placeholder="Confirm your password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <br />
-          <input type="submit" value="Register Now" className="register-btn" />
-        </form>
-        <div className="login-text">
-          Already have an account?{" "}
-          <span>
-            <a className="auth-link" href="/login">
-              Login
-            </a>
-          </span>
+    <div className="background">
+      <div className="stars"></div>
+      <div className="stars2"></div>
+      <div className="stars3"></div>
+      <div className="App auth-ctn">
+        <div className="login-card">
+          <div className="login-card-header">
+            <h1 className="login-card-header-text">Join Us, Explorer!</h1>
+          </div>
+          <div className="login-card-content">
+            <form onSubmit={handleRegister} className="register-form">
+              <TextField
+                label="Username"
+                className="auth-input"
+                type="text"
+                placeholder="Username"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                required
+              />
+              <TextField
+                className="auth-input"
+                label="Email"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <TextField
+                className="auth-input"
+                label="Password"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <TextField
+                className="auth-input"
+                type="password"
+                label="Confirm your password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <Button
+                type="submit"
+                value="Register Now"
+                className="register-btn"
+                variant="contained"
+              >
+                Register
+              </Button>
+            </form>
+            {error && <p className="error-msg">Error: {error}</p>}
+            <div className="login-text">
+              Already have an account?{" "}
+              <span>
+                <a className="auth-link" href="/login">
+                  Login
+                </a>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
