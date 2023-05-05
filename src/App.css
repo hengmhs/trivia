@@ -1,5 +1,5 @@
 body {
-  background-color: #090a0f;
+  background-color: #212121;
 }
 
 .background {
@@ -243,8 +243,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1em;
-  background-color: #131313;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3em 8em;
+  background-color: #282828;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .navbar-left {
