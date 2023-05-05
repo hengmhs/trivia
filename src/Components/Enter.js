@@ -29,7 +29,6 @@ function Enter() {
             <img src={QuantumLogo} alt="Quantum Quiz Logo" className="logo" />
           </div>
           <h1>Quantum Quiz</h1>
-          {!user ? <LoginError /> : null}
           <div className="enter-btns">
             <Link to="/login">
               <Button variant="contained">Login</Button>

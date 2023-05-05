@@ -338,3 +338,7 @@ body {
 .login-card-header-text {
   text-shadow: 0.1em 0.1em 0.1em rgb(20, 20, 20);
 }
+
+.auth {
+  text-align: center;
+}
