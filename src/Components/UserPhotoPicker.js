@@ -94,7 +94,7 @@ function UserPhotoPicker() {
               <button
                 key={photoName}
                 onClick={() => handlePhotoChange(photoURLS[index])}
-                className={`avatar-btn ${
+                className={`avatar-select ${
                   selectedPhoto === photoURLS[index] ? "selected" : ""
                 }`}
               >
