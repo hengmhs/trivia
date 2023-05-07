@@ -442,7 +442,7 @@ body {
 .avatar-header {
   min-width: 75%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   text-align: center;
 }
@@ -547,9 +547,16 @@ body {
   align-items: center;
 }
 
+.user-details {
+  margin: 30px;
+}
+
 .avatar-profile {
   width: 200px;
   height: 200px;
+  border: 1px solid whitesmoke;
+  border-radius: 50%;
+  margin-bottom: 20px;
 }
 
 .nav-btn,
@@ -566,10 +573,12 @@ input[type="submit"] {
 input::file-selector-button:hover,
 input[type="submit"]:hover {
   cursor: pointer;
+  color: #053e85;
+  background: whitesmoke;
 }
 
 .update-profile-ctn {
-  gap: 10px;
+  gap: 30px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -620,4 +629,26 @@ input[type="submit"]:hover {
 .update-email-btn,
 .update-password-btn {
   width: 500px;
+}
+
+.main-ctn {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.left-main-ctn {
+  border: 1px whitesmoke solid;
+  padding: 40px;
+}
+
+.username-text {
+  background: whitesmoke;
+  color: #081930;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
+.details-text {
+  margin: 5px 0;
 }
