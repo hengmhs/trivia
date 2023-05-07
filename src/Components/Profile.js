@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { ref as databaseRef, update } from "firebase/database";
@@ -16,12 +16,30 @@ function Profile() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [memberSince, setMemberSince] = useState("");
+  const [lastOnline, setLastOnline] = useState("");
   const [response, setResponse] = useState();
   const [photo, setPhoto] = useState();
   const [photoURL, setPhotoURL] = useState(user.photoURL);
 
-  const memberSince = user.metadata.creationTime.slice(5, 16);
-  const lastOnline = moment(user.metadata.lastSignInTime).fromNow();
+  // const memberSince = user.metadata.creationTime.slice(5, 16);
+  // const lastOnline = moment(user.metadata.lastSignInTime).fromNow();
+
+  const getUserMetadata = async () => {
+    if (user) {
+      const userMetadata = user.metadata;
+      const memberSince = userMetadata.creationTime;
+      const lastOnline = userMetadata.lastSignInTime;
+      await setMemberSince(memberSince.slice(8, 16));
+      await setLastOnline(moment(lastOnline).fromNow());
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      getUserMetadata();
+    }
+  }, [user]);
 
   const handleUpdatePhoto = async (e) => {
     e.preventDefault();
@@ -36,7 +54,7 @@ function Profile() {
           updateUserProfilePicture(url);
         })
         .then((response) => {
-          setResponse("Profile photo updated successfully");
+          setResponse("Profile photo updated successfully!");
         })
         .catch((err) => {
           setResponse(err.message);
