@@ -291,6 +291,16 @@ body {
   min-width: 500px;
 }
 
+.avatar-btn {
+  background: none;
+  border-style: none;
+  color: whitesmoke;
+}
+
+.avatar-btn:hover {
+  cursor: pointer;
+}
+
 .avatar-nav {
   width: 3.5em;
   height: 3.5em;
@@ -475,7 +485,7 @@ body {
   padding-top: 20px;
 }
 
-.avatar-btn {
+.avatar-select {
   width: 200px;
   height: 200px;
   background: none;
@@ -491,14 +501,14 @@ body {
   gap: 20px;
 }
 
-.avatar-btn:hover {
+.avatar-select:hover {
   cursor: pointer;
   border-radius: 50%;
   border-style: none;
   background: linear-gradient(to top, lightgray 0%, #fff 100%);
 }
 
-.avatar-btn:active {
+.avatar-select:active {
   background-color: olivedrab;
 }
 
