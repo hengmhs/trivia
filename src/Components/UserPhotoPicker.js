@@ -6,6 +6,8 @@ import { database, storage } from "../firebase";
 import { updateProfile } from "firebase/auth";
 import { ref as databaseRef, update } from "firebase/database";
 
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+
 function UserPhotoPicker() {
   const { user } = useAuth();
 
@@ -68,8 +70,11 @@ function UserPhotoPicker() {
           <Link to={`/profile/${user.uid}`} className="nav-link">
             ← Back to Profile
           </Link>
-          <h2 className="avatar-header">PICK AN AVATAR</h2>
+          <Link to={`/home`} className="nav-link">
+            <HomeOutlinedIcon fontSize="medium" />
+          </Link>
         </div>
+        <h2 className="avatar-header">PICK AN AVATAR</h2>
         <div className="avatar-selection-ctn">
           {!selectedPhoto ? (
             <img
@@ -78,13 +83,13 @@ function UserPhotoPicker() {
               className="user-avatar"
             />
           ) : (
-            <div>
+            <div className="avatar-ctn">
               <img
                 src={selectedPhoto}
                 alt="Selected avatar"
                 className="user-avatar"
               />
-              {response && <p className="response-text">{response} 🎉</p>}
+              {response && <div>{response} 🎉</div>}
             </div>
           )}
         </div>
