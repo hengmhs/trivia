@@ -9,9 +9,11 @@ import LoginForm from "./Components/LoginForm";
 import RegisterForm from "./Components/RegisterForm";
 import SessionError from "./Components/SessionError";
 import Profile from "./Components/Profile";
+import UserPhotoPicker from "./Components/UserPhotoPicker";
+import PrivateRoute from "./Components/PrivateRoute";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
-import PrivateRoute from "./Components/PrivateRoute";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -46,6 +48,7 @@ root.render(
           <Route element={<PrivateRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/profile/:uid" element={<Profile />} />
+            <Route path="/photopicker" element={<UserPhotoPicker />} />
             <Route path="/invalid" element={<InvalidRoom />} />
             <Route path="/room/:roomKey" element={<GameLobby />} />
           </Route>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { ref as databaseRef, update } from "firebase/database";
@@ -16,12 +16,30 @@ function Profile() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [memberSince, setMemberSince] = useState("");
+  const [lastOnline, setLastOnline] = useState("");
   const [response, setResponse] = useState();
   const [photo, setPhoto] = useState();
   const [photoURL, setPhotoURL] = useState(user.photoURL);
 
-  const memberSince = user.metadata.creationTime.slice(5, 16);
-  const lastOnline = moment(user.metadata.lastSignInTime).fromNow();
+  // const memberSince = user.metadata.creationTime.slice(5, 16);
+  // const lastOnline = moment(user.metadata.lastSignInTime).fromNow();
+
+  const getUserMetadata = async () => {
+    if (user) {
+      const userMetadata = user.metadata;
+      const memberSince = userMetadata.creationTime;
+      const lastOnline = userMetadata.lastSignInTime;
+      await setMemberSince(memberSince.slice(8, 16));
+      await setLastOnline(moment(lastOnline).fromNow());
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      getUserMetadata();
+    }
+  }, [user]);
 
   const handleUpdatePhoto = async (e) => {
     e.preventDefault();
@@ -36,7 +54,7 @@ function Profile() {
           updateUserProfilePicture(url);
         })
         .then((response) => {
-          setResponse("Profile photo updated successfully");
+          setResponse("Profile photo updated successfully!");
         })
         .catch((err) => {
           setResponse(err.message);
@@ -102,68 +120,94 @@ function Profile() {
   };
 
   return (
-    <div className="App">
-      <Link to="/home" className="navbar-ctn">
-        <button className="back-btn">Back to Home</button>
-      </Link>
-      <br />
+    <div className="App page-ctn">
       <div className="profile-ctn">
-        <h1>User Profile</h1>
-        <br />
-        <form onSubmit={handleUpdatePhoto} className="update-ctn">
-          <img className="avatar-profile" alt="User avatar" src={photoURL} />
-          <br />
-          <input
-            className="update-input"
-            type="file"
-            name="profilePhoto"
-            alt="User profile photo"
-            onChange={(e) => setPhoto(e.target.files[0])}
-            src={photoURL}
-          />
-          <input
-            type="submit"
-            value="Update Profile Photo"
-            className="update-btn"
-          />
-        </form>
-        <p>{String(user?.email).split("@")[0]}</p>
-        <p>{user?.email}</p>
-        {response && <p>{response}</p>}
-        <p>Member since {memberSince}</p>
-        <p>Last online {lastOnline}</p>
+        <div className="nav-ctn">
+          <Link to="/home" className="back-link">
+            ← Back to Home
+          </Link>
+        </div>
+      </div>
+      <h2 className="profile-header">YOUR PROFILE</h2>
 
-        <br />
-        <h2>Update user details</h2>
-        <form onSubmit={handleUpdateEmail} className="update-ctn">
-          <input
-            className="update-input"
-            type="email"
-            placeholder="Enter new email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input type="submit" value="Update email" className="update-btn" />
-          <br />
-        </form>
-        <form onSubmit={handleUpdatePassword} className="update-ctn">
-          <input
-            className="update-input"
-            type="password"
-            placeholder="Enter new password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            className="update-input"
-            type="password"
-            placeholder="Re-enter new password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <input type="submit" value="Update password" className="update-btn" />
-          <br />
-        </form>
+      <div className="main-ctn">
+        <div className="left-main-ctn">
+          <div className="user-info-ctn">
+            <img alt="User avatar" src={photoURL} className="avatar-profile" />
+            <Link to="/photopicker">
+              <button className="nav-btn">CHOOSE AVATAR</button>
+            </Link>
+            <div className="user-details">
+              <span className="username-text details-text">
+                @{user?.displayName}
+              </span>
+              <span className="details-text">{user?.email}</span>
+              <span className="details-text">Member since {memberSince}</span>
+              <span className="details-text">Last online {lastOnline}</span>
+            </div>
+            {response && <p>{response}</p>}
+          </div>
+        </div>
+        <div className="right-main-ctn">
+          <div className="update-profile-ctn">
+            <h2 className="update-profile-header">Update Profile</h2>
+            <form onSubmit={handleUpdatePhoto} className="update-photo-ctn">
+              {/* <img className="avatar-profile" alt="User avatar" src={photoURL} /> */}
+              <input
+                className="file-input"
+                type="file"
+                name="profilePhoto"
+                alt="User profile photo"
+                onChange={(e) => setPhoto(e.target.files[0])}
+                src={photoURL}
+              />
+              <input
+                type="submit"
+                value="UPDATE PROFILE PHOTO"
+                className="submit-btn"
+              />
+            </form>
+            <form onSubmit={handleUpdateEmail} className="update-email-ctn">
+              <input
+                className="update-input"
+                type="email"
+                placeholder="Enter new email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                type="submit"
+                value="UPDATE EMAIL"
+                className="update-email-btn"
+              />
+            </form>
+            <form
+              onSubmit={handleUpdatePassword}
+              className="update-password-ctn"
+            >
+              <input
+                className="update-input"
+                type="password"
+                placeholder="Enter new password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <input
+                className="update-input"
+                type="password"
+                placeholder="Re-enter new password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <input
+                type="submit"
+                value="UPDATE PASSWORD"
+                className="update-password-btn"
+              />
+              <br />
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );
