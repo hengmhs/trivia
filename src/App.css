@@ -419,7 +419,7 @@ body {
 
 .photo-picker-ctn,
 .profile-ctn {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -440,7 +440,7 @@ body {
 }
 
 .avatar-header {
-  min-width: 75%;
+  min-width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -448,11 +448,12 @@ body {
 }
 
 .avatar-selection-ctn {
-  width: 80%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  margin: 0 auto;
 }
 
 .avatar-selector-ctn {
@@ -468,10 +469,8 @@ body {
   width: 200px;
   height: 200px;
   background: none;
-  /* border-radius: 50%; */
-  /* background: linear-gradient(to top, lightgray 0%, #fff 100%); */
-  border-style: none;
-  /* border: 1px solid black; */
+  border-radius: 50%;
+  border: 1px solid whitesmoke;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -484,11 +483,11 @@ body {
   cursor: pointer;
   border-radius: 50%;
   border-style: none;
-  background: linear-gradient(to top, lightgray 0%, #fff 100%);
+  border: 1px solid #ffdf00;
 }
 
 .avatar-select:active {
-  background-color: olivedrab;
+  border: 1px solid #32cd32;
 }
 
 .alien-avatars {
@@ -502,6 +501,15 @@ body {
   /* border-radius: 50%; */
   /* background-color: lightgray; */
   margin: 10px;
+  border: whitesmoke 1px solid;
+  border-radius: 50%;
+}
+
+.avatar-ctn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Profile styles */
