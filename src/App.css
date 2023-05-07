@@ -283,20 +283,17 @@ body {
   border-style: none;
 }
 
-.avatar-btn {
-  background: none;
-  border-style: none;
-  color: whitesmoke;
+.avatar-btn-ctn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 500px;
 }
 
 .avatar-nav {
   width: 3.5em;
   height: 3.5em;
-}
-
-.avatar-profile {
-  width: 200px;
-  height: 200px;
 }
 
 .profile-ctn {
@@ -423,3 +420,99 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #040b16;
 }
+
+/* UserPhotoPicker styles */
+.page-ctn {
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+.photo-picker-ctn,
+.profile-ctn {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: whitesmoke;
+  padding-bottom: 5px;
+}
+
+.nav-link:hover,
+.back-link:hover {
+  cursor: pointer;
+  color: #ff6200;
+}
+
+.avatar-header {
+  min-width: 75%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+}
+
+.avatar-selection-ctn {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.avatar-selector-ctn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 20px;
+}
+
+.avatar-btn {
+  width: 200px;
+  height: 200px;
+  background: none;
+  /* border-radius: 50%; */
+  /* background: linear-gradient(to top, lightgray 0%, #fff 100%); */
+  border-style: none;
+  /* border: 1px solid black; */
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  gap: 20px;
+}
+
+.avatar-btn:hover {
+  cursor: pointer;
+  border-radius: 50%;
+  border-style: none;
+  background: linear-gradient(to top, lightgray 0%, #fff 100%);
+}
+
+.avatar-btn:active {
+  background-color: olivedrab;
+}
+
+.alien-avatars {
+  width: 200px;
+  height: 200px;
+}
+
+.user-avatar {
+  width: 200px;
+  height: 200px;
+  /* border-radius: 50%; */
+  /* background-color: lightgray; */
+  margin: 10px;
+}
+
+/* Profile styles */
