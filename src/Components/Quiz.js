@@ -268,6 +268,7 @@ const Quiz = (props) => {
           timeOut={() => {
             timeOut();
           }}
+          currentQuestionIndex={currentQuestionIndex}
         />
       )}
     </div>
