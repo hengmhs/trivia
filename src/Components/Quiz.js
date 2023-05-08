@@ -11,6 +11,7 @@ import {
 } from "firebase/database";
 import { database } from "../firebase";
 import GameOverScreen from "./GameOverScreen.js";
+import Timer from "./Timer";
 
 const Quiz = (props) => {
   const firstRender = useRef(true);
@@ -151,7 +152,6 @@ const Quiz = (props) => {
 
   const submitAnswer = (currentOptionsPosition) => {
     const userAnswer = currentOptions[currentOptionsPosition];
-    console.log(userAnswer);
     if (currentQuestionIndex >= questionList.length - 1) {
       submitGameOver();
       setIsSingleGameOver(true);
@@ -164,6 +164,18 @@ const Quiz = (props) => {
       });
     } else {
       setQuizText(`Wrong, the correct answer was: ${currentAnswer}`);
+      setCurrentQuestionIndex((currentQuestionIndex) => {
+        return currentQuestionIndex + 1;
+      });
+    }
+  };
+
+  const timeOut = () => {
+    setQuizText(`You ran out of time. ${currentAnswer} was the answer.`);
+    if (currentQuestionIndex >= questionList.length - 1) {
+      submitGameOver();
+      setIsSingleGameOver(true);
+    } else {
       setCurrentQuestionIndex((currentQuestionIndex) => {
         return currentQuestionIndex + 1;
       });
@@ -250,6 +262,15 @@ const Quiz = (props) => {
           />
         )}
       </div>
+      {props.gameStarted && !isSingleGameOver && (
+        <Timer
+          seconds={60}
+          timeOut={() => {
+            timeOut();
+          }}
+          currentQuestionIndex={currentQuestionIndex}
+        />
+      )}
     </div>
   );
 };
