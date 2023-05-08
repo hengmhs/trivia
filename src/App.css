@@ -660,3 +660,12 @@ input[type="submit"]:hover {
 .details-text {
   margin: 5px 0;
 }
+
+.error-container {
+  text-align: center;
+  width: 100%;
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
