@@ -725,7 +725,7 @@ input[type="submit"]:hover {
   border-radius: 50%;
 }
 
-.user-info-ctn {
+.user-info {
   display: flex;
   justify-content: center;
   align-items: center;
