@@ -39,7 +39,7 @@ function User() {
             <HomeOutlinedIcon fontSize="medium" />
           </Link>
         </div>
-        <div className="user-info-ctn">
+        <div className="user-info">
           <img src={userData.photoURL} alt="User avatar" id="user-avatar" />
 
           <div className="user-details details-text">
