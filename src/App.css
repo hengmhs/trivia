@@ -677,3 +677,62 @@ input[type="submit"]:hover {
   gap: 1em;
   justify-content: space-evenly;
 }
+
+.users-ctn,
+.user-ctn {
+  border: 1px solid black;
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.users-list-ctn {
+  width: 100%;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.users-list {
+  list-style-type: none;
+}
+
+.users-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.users-avatar {
+  width: 150px;
+  height: 150px;
+  margin: 20px;
+  border-radius: 50%;
+  /* border: 1px solid whitesmoke; */
+}
+
+#user-avatar {
+  width: 200px;
+  height: 200px;
+  margin: 20px;
+  border-radius: 50%;
+}
+
+.user-info-ctn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  /* border: 1px solid whitesmoke; */
+}
+
+.details-text {
+  gap: 10px;
+}
