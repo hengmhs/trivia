@@ -462,15 +462,16 @@ body {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  padding-top: 20px;
+  padding-top: 40px;
 }
 
 .avatar-select {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   background: none;
+  border-style: none;
   border-radius: 50%;
-  border: 1px solid whitesmoke;
+  box-shadow: 0 3px 10px rgba(245, 245, 245, 1.5);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -483,26 +484,24 @@ body {
   cursor: pointer;
   border-radius: 50%;
   border-style: none;
-  border: 1px solid #ffdf00;
+  border: 1px solid whitesmoke;
 }
 
 .avatar-select:active {
-  border: 1px solid #32cd32;
+  box-shadow: 0 3px 10px rgba(245, 245, 245, 1.5);
 }
 
 .alien-avatars {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
 }
 
 .user-avatar {
   width: 200px;
   height: 200px;
-  /* border-radius: 50%; */
-  /* background-color: lightgray; */
-  margin: 10px;
-  border: whitesmoke 1px solid;
+  margin: 20px;
   border-radius: 50%;
+  box-shadow: 0 3px 10px rgba(245, 245, 245, 2);
 }
 
 .avatar-ctn {
@@ -677,4 +676,63 @@ input[type="submit"]:hover {
   display: flex;
   gap: 1em;
   justify-content: space-evenly;
+}
+
+.users-ctn,
+.user-ctn {
+  border: 1px solid black;
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.users-list-ctn {
+  width: 100%;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.users-list {
+  list-style-type: none;
+}
+
+.users-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.users-avatar {
+  width: 150px;
+  height: 150px;
+  margin: 20px;
+  border-radius: 50%;
+  /* border: 1px solid whitesmoke; */
+}
+
+#user-avatar {
+  width: 200px;
+  height: 200px;
+  margin: 20px;
+  border-radius: 50%;
+}
+
+.user-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  /* border: 1px solid whitesmoke; */
+}
+
+.details-text {
+  gap: 10px;
 }

@@ -36,6 +36,9 @@ function Navbar() {
       </div>
 
       <div className="navbar-right">
+        <Link to={"/users"}>
+          <button className="nav-btn">ALL USERS</button>
+        </Link>
         <ActiveUser />
         <Link to={"/login"}>
           <Button className="logout-btn" onClick={() => logout()}>

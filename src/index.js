@@ -11,6 +11,8 @@ import SessionError from "./Components/SessionError";
 import Profile from "./Components/Profile";
 import UserPhotoPicker from "./Components/UserPhotoPicker";
 import PrivateRoute from "./Components/PrivateRoute";
+import UsersList from "./Components/UsersList";
+import User from "./Components/User";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
@@ -49,6 +51,8 @@ root.render(
             <Route path="/home" element={<Home />} />
             <Route path="/profile/:uid" element={<Profile />} />
             <Route path="/photopicker" element={<UserPhotoPicker />} />
+            <Route path="/users" element={<UsersList />} />
+            <Route path="/users/:id" element={<User />} />
             <Route path="/invalid" element={<InvalidRoom />} />
             <Route path="/room/:roomKey" element={<GameLobby />} />
           </Route>
