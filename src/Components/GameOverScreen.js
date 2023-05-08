@@ -1,15 +1,5 @@
 import React from "react";
-import he from "he";
-import { useState, useEffect, useRef } from "react";
-import {
-  set,
-  ref,
-  onValue,
-  runTransaction,
-  child,
-  get,
-} from "firebase/database";
-import { database } from "../firebase";
+import { useEffect } from "react";
 
 const GameOverScreen = (props) => {
   useEffect(() => {
