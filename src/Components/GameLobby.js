@@ -7,6 +7,8 @@ import { database, auth } from "../firebase";
 import { set, ref, onValue, onDisconnect, get } from "firebase/database";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
+import Button from "@mui/material/Button";
 
 // Objective: Users can join room via the React Router Link, and can increment/decrement counters
 
@@ -156,41 +158,51 @@ const GameLobby = () => {
 
   return (
     <div className="App">
-      <div>Name: {displayName}</div>
-      <h3>Connected Players</h3>
-      <div>
-        {Object.entries(connectedPlayers).map((player) => {
-          // player = ['uid':'displayName']
-          return <li key={player[0]}>{player[1]}</li>;
-        })}
-      </div>
-      <div>
-        <i>Note: When the host disconnects, the room is deleted.</i>
-      </div>
-      <div>
-        <h3>Scores: </h3>
+      <Navbar />
+      <div className="game-lobby-container">
         <div>
-          {Object.entries(scores).map((scoreCard) => {
-            // ["uid", [{displayName: str, score: int}]]
-            const displayName = scoreCard[1].displayName;
-            const score = scoreCard[1].score;
-            return (
-              <div key={"score" + scoreCard[0]}>
-                {displayName} : {score}{" "}
-              </div>
-            );
-          })}
+          <h3>Connected Players</h3>
+          <div>
+            {Object.entries(connectedPlayers).map((player) => {
+              // player = ['uid':'displayName']
+              return <li key={player[0]}>{player[1]}</li>;
+            })}
+          </div>
+          <div>
+            <i>Note: When the host disconnects, the room is deleted.</i>
+          </div>
         </div>
-        <Quiz
-          gameStarted={gameStarted}
-          roomKey={roomKey}
-          DB_SCORE_KEY={DB_SCORE_KEY}
-          DB_GAME_OVER_KEY={DB_GAME_OVER_KEY}
-          userUID={userUID}
-          scores={scores}
-        />
+        <div>
+          <Quiz
+            gameStarted={gameStarted}
+            roomKey={roomKey}
+            DB_SCORE_KEY={DB_SCORE_KEY}
+            DB_GAME_OVER_KEY={DB_GAME_OVER_KEY}
+            userUID={userUID}
+            scores={scores}
+          />
+          {!gameStarted && (
+            <Button onClick={startGame} variant="contained">
+              Start Game
+            </Button>
+          )}
+        </div>
+        <div>
+          <h3>Scores: </h3>
+          <div>
+            {Object.entries(scores).map((scoreCard) => {
+              // ["uid", [{displayName: str, score: int}]]
+              const displayName = scoreCard[1].displayName;
+              const score = scoreCard[1].score;
+              return (
+                <div key={"score" + scoreCard[0]}>
+                  {displayName} : {score}{" "}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
-      {!gameStarted && <button onClick={startGame}>Start Game</button>}
     </div>
   );
 };

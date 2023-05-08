@@ -669,3 +669,12 @@ input[type="submit"]:hover {
   flex-direction: column;
   gap: 1em;
 }
+
+.game-lobby-container {
+  text-align: center;
+  width: 100%;
+  margin: 1em;
+  display: flex;
+  gap: 1em;
+  justify-content: space-evenly;
+}
