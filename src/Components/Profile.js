@@ -22,9 +22,6 @@ function Profile() {
   const [photo, setPhoto] = useState();
   const [photoURL, setPhotoURL] = useState(user.photoURL);
 
-  // const memberSince = user.metadata.creationTime.slice(5, 16);
-  // const lastOnline = moment(user.metadata.lastSignInTime).fromNow();
-
   const getUserMetadata = async () => {
     if (user) {
       const userMetadata = user.metadata;
@@ -139,7 +136,7 @@ function Profile() {
             </Link>
             <div className="user-details">
               <span className="username-text details-text">
-                @{user?.displayName}
+                {user?.displayName}
               </span>
               <span className="details-text">{user?.email}</span>
               <span className="details-text">Member since {memberSince}</span>
@@ -152,7 +149,6 @@ function Profile() {
           <div className="update-profile-ctn">
             <h2 className="update-profile-header">Update Profile</h2>
             <form onSubmit={handleUpdatePhoto} className="update-photo-ctn">
-              {/* <img className="avatar-profile" alt="User avatar" src={photoURL} /> */}
               <input
                 className="file-input"
                 type="file"
