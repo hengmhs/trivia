@@ -23,7 +23,8 @@ const GameOverScreen = (props) => {
       const displayName = scoreCard[1].displayName;
       const score = scoreCard[1].score;
       const winner = false;
-      scoreArray.push([score, displayName, winner]);
+      const uid = scoreCard[0];
+      scoreArray.push([score, displayName, winner, uid]);
     });
     console.log("unsorted scoreArray: ", scoreArray);
     // sort from highest score to lowest score
@@ -55,7 +56,7 @@ const GameOverScreen = (props) => {
         <div>Rankings</div>
         {scoreArray.map((scoreData) => {
           return (
-            <div>
+            <div key={scoreData[3]}>
               {scoreData[2] && <b> Winner </b>}
               {scoreData[1]} : {scoreData[0]}
             </div>

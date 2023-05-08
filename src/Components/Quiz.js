@@ -171,12 +171,15 @@ const Quiz = (props) => {
   };
 
   const timeOut = () => {
-    console.log("currentQuestionIndex: ", currentQuestionIndex);
-    console.log("questionList.length-1: ", questionList.length - 1);
     setQuizText(`You ran out of time. ${currentAnswer} was the answer.`);
-    setCurrentQuestionIndex((currentQuestionIndex) => {
-      return currentQuestionIndex + 1;
-    });
+    if (currentQuestionIndex >= questionList.length - 1) {
+      submitGameOver();
+      setIsSingleGameOver(true);
+    } else {
+      setCurrentQuestionIndex((currentQuestionIndex) => {
+        return currentQuestionIndex + 1;
+      });
+    }
   };
 
   const allGameOverRef = ref(
@@ -259,9 +262,9 @@ const Quiz = (props) => {
           />
         )}
       </div>
-      {props.gameStarted && (
+      {props.gameStarted && !isSingleGameOver && (
         <Timer
-          seconds={5}
+          seconds={60}
           timeOut={() => {
             timeOut();
           }}
