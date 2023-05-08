@@ -462,15 +462,16 @@ body {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  padding-top: 20px;
+  padding-top: 40px;
 }
 
 .avatar-select {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   background: none;
+  border-style: none;
   border-radius: 50%;
-  border: 1px solid whitesmoke;
+  box-shadow: 0 3px 10px rgba(245, 245, 245, 1.5);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -483,26 +484,24 @@ body {
   cursor: pointer;
   border-radius: 50%;
   border-style: none;
-  border: 1px solid #ffdf00;
+  border: 1px solid whitesmoke;
 }
 
 .avatar-select:active {
-  border: 1px solid #32cd32;
+  box-shadow: 0 3px 10px rgba(245, 245, 245, 1.5);
 }
 
 .alien-avatars {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
 }
 
 .user-avatar {
   width: 200px;
   height: 200px;
-  /* border-radius: 50%; */
-  /* background-color: lightgray; */
-  margin: 10px;
-  border: whitesmoke 1px solid;
+  margin: 20px;
   border-radius: 50%;
+  box-shadow: 0 3px 10px rgba(245, 245, 245, 2);
 }
 
 .avatar-ctn {
