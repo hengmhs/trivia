@@ -46,25 +46,28 @@ setOpenGameList((openGameList) => [
   */
 
   let roomDisplay = openGameList.map((room) => {
-    return (
-      <div className="room-card" key={room.key}>
-        <div className="room-card-title">
-          <h3>{room.roomName}</h3>
+    // do not display games in the list that have already started
+    if (room.gameStarted === false) {
+      return (
+        <div className="room-card" key={room.key}>
+          <div className="room-card-title">
+            <h3>{room.roomName}</h3>
+          </div>
+          <div>Host: {room.hostDisplayName}</div>
+          <div>
+            Players: {room.playerList && Object.entries(room.playerList).length}
+          </div>
+          <Button
+            onClick={() => {
+              //`/room/${room.key}`
+              navigate(`/room/${room.key}`);
+            }}
+          >
+            Join
+          </Button>
         </div>
-        <div>Host: {room.hostDisplayName}</div>
-        <div>
-          Players: {room.playerList && Object.entries(room.playerList).length}
-        </div>
-        <Button
-          onClick={() => {
-            //`/room/${room.key}`
-            navigate(`/room/${room.key}`);
-          }}
-        >
-          Join
-        </Button>
-      </div>
-    );
+      );
+    }
   });
   return (
     <div className="game-feed-container">
