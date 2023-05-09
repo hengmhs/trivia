@@ -662,11 +662,10 @@ input[type="submit"]:hover {
 
 .error-container {
   text-align: center;
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1em;
-  overflow: hidden;
+  padding: 1em;
 }
 
 .game-lobby-container {
@@ -806,6 +805,10 @@ input[type="submit"]:hover {
   height: 10em;
 }
 
+.room-card-title {
+  background-color: #020203;
+}
+
 @media (max-width: 600px) {
   .home-content-container {
     display: flex;
@@ -823,5 +826,10 @@ input[type="submit"]:hover {
 
   .navbar-user-btn {
     display: none;
+  }
+
+  .game-lobby-container {
+    display: flex;
+    flex-direction: column;
   }
 }
