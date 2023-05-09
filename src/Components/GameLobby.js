@@ -36,7 +36,6 @@ const GameLobby = () => {
 
   // get the room key from the URL, params refers to path="/room/:roomKey"
   const { roomKey } = useParams();
-  console.log("Room Key: " + roomKey);
   const currentRoomRef = ref(database, `${DB_ROOM_KEY}/${roomKey}`);
   const questionsRef = ref(database, `${DB_QUESTIONS_KEY}/${roomKey}`);
 
@@ -116,9 +115,15 @@ const GameLobby = () => {
         // Check for connecting and disconnecting players
         // Check for whether the game has started
         onValue(currentRoomRef, (room) => {
-          const roomData = room.val();
-          setConnectedPlayers(roomData.playerList);
-          setGameStarted(roomData.gameStarted);
+          console.log("Room Data: ", room);
+          if (room.val()) {
+            const roomData = room.val();
+            setConnectedPlayers(roomData.playerList);
+            setGameStarted(roomData.gameStarted);
+          } else {
+            // if the host has deleted the room
+            navigate("/invalid");
+          }
         });
 
         // Check for changing player scores
@@ -161,9 +166,7 @@ const GameLobby = () => {
   // cleanup database connections
   useEffect(() => {
     return () => {
-      console.log("Unmounting Component");
       get(currentRoomRef).then((room) => {
-        console.log(auth.currentUser.uid);
         if (room && auth.currentUser.uid) {
           // for the host, delete all parent references
           if (room.val().hostUID === auth.currentUser.uid) {

@@ -9,7 +9,6 @@ function Navbar() {
 
   function ActiveUser() {
     if (user) {
-      console.log(user);
       return (
         <div>
           <Link to={`/profile/${user.uid}`}>
