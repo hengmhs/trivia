@@ -83,8 +83,6 @@ function Profile() {
 
     await updateUserEmail(email)
       .then(() => {
-        console.log(email);
-        console.log("Email updated: ", user);
         updateDatabaseEmail();
       })
       .then((response) => {

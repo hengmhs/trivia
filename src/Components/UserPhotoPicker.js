@@ -28,7 +28,6 @@ function UserPhotoPicker() {
     listAll(profilePhotosRef).then((res) => {
       const photoNames = res.items.map((item) => item.name);
       setPhotoNames(photoNames);
-      console.log("Photo names: ", photoNames);
 
       // Loop through files and get each URL
       const urls = [];
@@ -36,7 +35,6 @@ function UserPhotoPicker() {
         getDownloadURL(item).then((url) => {
           urls.push(url);
           setPhotoURLs([...urls]);
-          console.log("Photo URLs: ", photoURLS);
         });
       });
     });

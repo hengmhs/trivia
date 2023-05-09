@@ -22,7 +22,6 @@ function User() {
   useEffect(() => {
     onValue(userRef, (snapshot) => {
       const userData = snapshot.val();
-      console.log("User data: ", userData);
       setUserData(userData);
     });
     return () => off(userRef);

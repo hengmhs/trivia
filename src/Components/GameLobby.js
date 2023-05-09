@@ -53,7 +53,6 @@ const GameLobby = () => {
       if (!snapshot.child(roomKey).exists()) {
         navigate("/invalid");
       } else {
-        console.log("Snapshot RoomKey: ", snapshot.child(roomKey).val());
         if (snapshot.child(roomKey).val().gameStarted === true) {
           navigate("/alreadystarted");
         } else {
@@ -132,18 +131,15 @@ const GameLobby = () => {
     // Check for connecting and disconnecting players
     // Check for whether the game has started
     return onValue(currentRoomRef, (room) => {
-      console.log("Room Data: ", room);
       if (room.val()) {
         const roomData = room.val();
         setConnectedPlayers(roomData.playerList);
         setGameStarted(roomData.gameStarted);
       } else {
         // when the host has deleted the room:
-        // if the game is NOT over and the host has left, navigate to invalid
+        // TODO: if the game is NOT over and the host has left, navigate to invalid
         // else if the game is over and the host has left, do nothing
-        console.log("no room detected");
         if (!isAllGameOver) {
-          console.log("isAllGameOver: ", isAllGameOver);
           navigate("/invalid");
         }
       }

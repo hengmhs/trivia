@@ -102,7 +102,6 @@ const Quiz = (props) => {
     if (firstRender.current) {
       firstRender.current = false;
     } else {
-      console.log("Question Index: ", currentQuestionIndex);
       if (currentQuestionIndex < questionList.length) {
         loadQuestion(currentQuestionIndex);
       } else {
@@ -118,7 +117,6 @@ const Quiz = (props) => {
       ...currentQuestionData.incorrect_answers,
       currentQuestionData.correct_answer,
     ];
-    console.log("Current Answer: ", currentAnswer);
     // Durstenfeld Shuffle from Stack Overflow: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
     const shuffleArray = (array) => {
       for (let i = array.length - 1; i > 0; i--) {
@@ -193,7 +191,6 @@ const Quiz = (props) => {
     `${props.DB_GAME_OVER_KEY}/${props.roomKey}`
   );
   onValue(allGameOverRef, (gameOverData) => {
-    console.log("gameOverData: ", gameOverData.val());
     let allPlayersGameOver = true;
     Object.entries(gameOverData.val()).map((playerGameOver) => {
       // playerGameOver = [userUID, {displayName: str, gameOver: bool}]
