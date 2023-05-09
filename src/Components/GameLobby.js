@@ -4,11 +4,19 @@ import Quiz from "./Quiz";
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { database, auth } from "../firebase";
-import { set, ref, onValue, onDisconnect, get } from "firebase/database";
+import {
+  set,
+  ref,
+  onValue,
+  onDisconnect,
+  get,
+  remove,
+} from "firebase/database";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Button from "@mui/material/Button";
+import { Remove } from "@mui/icons-material";
 
 // Objective: Users can join room via the React Router Link, and can increment/decrement counters
 
@@ -30,6 +38,7 @@ const GameLobby = () => {
   const { roomKey } = useParams();
   console.log("Room Key: " + roomKey);
   const currentRoomRef = ref(database, `${DB_ROOM_KEY}/${roomKey}`);
+  const questionsRef = ref(database, `${DB_QUESTIONS_KEY}/${roomKey}`);
 
   // componentDidMount
   useEffect(() => {
@@ -139,13 +148,53 @@ const GameLobby = () => {
     // (nonexistent rooms have no hostuid)
     if (hostUID) {
       if (auth.currentUser.uid === hostUID) {
-        console.log("You are the host");
-        const questionsRef = ref(database, `${DB_QUESTIONS_KEY}/${roomKey}`);
+        const allScoreRef = ref(database, `${DB_SCORE_KEY}/${roomKey}/`);
+        const allGameOver = ref(database, `${DB_GAME_OVER_KEY}/${roomKey}`);
         onDisconnect(currentRoomRef).remove(currentRoomRef);
         onDisconnect(questionsRef).remove(questionsRef);
+        onDisconnect(allScoreRef).remove(allScoreRef);
+        onDisconnect(allGameOver).remove(allGameOver);
       }
     }
   }, [hostUID]);
+
+  // cleanup database connections
+  useEffect(() => {
+    return () => {
+      console.log("Unmounting Component");
+      get(currentRoomRef).then((room) => {
+        console.log(auth.currentUser.uid);
+        if (room && auth.currentUser.uid) {
+          // for the host, delete all parent references
+          if (room.val().hostUID === auth.currentUser.uid) {
+            const allScoreRef = ref(database, `${DB_SCORE_KEY}/${roomKey}/`);
+            const allGameOver = ref(database, `${DB_GAME_OVER_KEY}/${roomKey}`);
+            remove(currentRoomRef);
+            remove(questionsRef);
+            remove(allScoreRef);
+            remove(allGameOver);
+          } else {
+            // remove a player from the playerList, scores & gameOver keys when they leave the page
+            const connectedPlayerRef = ref(
+              database,
+              `${DB_ROOM_KEY}/${roomKey}/playerList/${auth.currentUser.uid}`
+            );
+            remove(connectedPlayerRef);
+            const scoreRef = ref(
+              database,
+              `${DB_SCORE_KEY}/${roomKey}/${auth.currentUser.uid}`
+            );
+            remove(scoreRef);
+            const gameOverRef = ref(
+              database,
+              `${DB_GAME_OVER_KEY}/${roomKey}/${auth.currentUser.uid}`
+            );
+            remove(gameOverRef);
+          }
+        }
+      });
+    };
+  }, []);
 
   const startGame = () => {
     const gameStartedRef = ref(
