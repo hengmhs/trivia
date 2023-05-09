@@ -215,6 +215,7 @@ const Quiz = (props) => {
             Q. {currentQuestionIndex + 1}/{questionList.length}:{" "}
             {he.decode(currentQuestionData.question)}
           </div>
+          <div className="quiz-category">{currentQuestionData.category}</div>
           <div>
             <button
               className="option-btn"
