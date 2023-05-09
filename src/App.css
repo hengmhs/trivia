@@ -678,6 +678,11 @@ input[type="submit"]:hover {
   justify-content: space-evenly;
 }
 
+.game-lobby-room-name {
+  text-align: center;
+  width: 100%;
+}
+
 .users-ctn,
 .user-ctn {
   border: 1px solid black;

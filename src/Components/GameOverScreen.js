@@ -1,5 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 const GameOverScreen = (props) => {
   useEffect(() => {
@@ -52,6 +54,11 @@ const GameOverScreen = (props) => {
             </div>
           );
         })}
+        <div>
+          <Link to="/home">
+            <Button variant="contained">Return Home</Button>
+          </Link>
+        </div>
       </div>
     );
   };

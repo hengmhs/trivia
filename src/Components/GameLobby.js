@@ -32,6 +32,7 @@ const GameLobby = () => {
   const [userUID, setUserUID] = useState("");
   const [hostUID, setHostUID] = useState("");
   const [gameStarted, setGameStarted] = useState(false);
+  const [roomName, setRoomName] = useState("placeholder room name");
   const navigate = useNavigate();
 
   // get the room key from the URL, params refers to path="/room/:roomKey"
@@ -108,6 +109,7 @@ const GameLobby = () => {
             .then((room) => {
               if (room) {
                 setHostUID(room.val().hostUID);
+                setRoomName(room.val().roomName);
               } else {
                 console.log("No data available");
               }
@@ -126,6 +128,9 @@ const GameLobby = () => {
               setGameStarted(roomData.gameStarted);
             } else {
               // if the host has deleted the room
+              // TODO: create a check to see if the game is over
+              // if the game is NOT over and the host has left, navigate to invalid
+              // if the game is over and the host has left, do nothing
               navigate("/invalid");
             }
           });
@@ -216,6 +221,9 @@ const GameLobby = () => {
   return (
     <div className="App">
       <Navbar />
+      <div className="game-lobby-room-name">
+        <h2>{roomName}</h2>
+      </div>
       <div className="game-lobby-container">
         <div>
           <h3>Connected Players</h3>
