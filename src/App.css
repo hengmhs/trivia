@@ -805,3 +805,18 @@ input[type="submit"]:hover {
   width: 10em;
   height: 10em;
 }
+
+@media only screen and (max-width: 600px) {
+  .home-content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+
+  .home-background {
+    background-image: url("./images/NASA_EARTH_CLEAR_LOW.jpg");
+    margin: 0;
+    background-size: cover;
+    background-position: center;
+  }
+}
