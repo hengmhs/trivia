@@ -35,12 +35,12 @@ function Navbar() {
       </div>
 
       <div className="navbar-right">
-        <Link to={"/users"}>
-          <button className="nav-btn">ALL USERS</button>
-        </Link>
         <ActiveUser />
+        <Link to={"/users"}>
+          <Button variant="outlined">USERS</Button>
+        </Link>
         <Link to={"/login"}>
-          <Button className="logout-btn" onClick={() => logout()}>
+          <Button variant="outlined" onClick={() => logout()}>
             Logout
           </Button>
         </Link>
