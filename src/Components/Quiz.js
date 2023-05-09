@@ -197,7 +197,7 @@ const Quiz = (props) => {
     });
     // this will loop infinitely without !isAllGameOver
     if (allPlayersGameOver && !props.isAllGameOver) {
-      props.setIsAllGameOver(true);
+      props.setIsAllGameOver();
     }
   });
 
