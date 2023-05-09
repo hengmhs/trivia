@@ -796,3 +796,8 @@ input[type="submit"]:hover {
   align-items: center;
   margin: 0 5% 0 0;
 }
+
+.alien {
+  width: 5em;
+  height: 5em;
+}

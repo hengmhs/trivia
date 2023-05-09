@@ -13,11 +13,13 @@ import { database } from "../firebase";
 import GameOverScreen from "./GameOverScreen.js";
 import Timer from "./Timer";
 import { Paper } from "@mui/material";
+import CorrectAlien from "../images/correct_alien.png";
 
 const Quiz = (props) => {
   const firstRender = useRef(true);
   const [currentOptions, setCurrentOptions] = useState(["A", "B", "C", "D"]);
   const [currentAnswer, setCurrentAnswer] = useState(null);
+  const [alienImage, setAlienImage] = useState(null);
   const [quizText, setQuizText] = useState("");
 
   // The game over status for just this single player
@@ -212,6 +214,10 @@ const Quiz = (props) => {
       )}
       {props.gameStarted && !isSingleGameOver && (
         <div>
+          <div className="alien">
+            <img src={CorrectAlien} alt="Correct" />
+          </div>
+
           <div>
             Q. {currentQuestionIndex + 1}/{questionList.length}:{" "}
             {he.decode(currentQuestionData.question)}
