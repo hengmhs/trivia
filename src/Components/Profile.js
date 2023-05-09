@@ -22,6 +22,10 @@ function Profile() {
   const [photo, setPhoto] = useState();
   const [photoURL, setPhotoURL] = useState(user.photoURL);
 
+  useEffect(() => {
+    document.title = "Profile | Quantum Quiz";
+  }, []);
+
   const getUserMetadata = async () => {
     if (user) {
       const userMetadata = user.metadata;
@@ -125,7 +129,7 @@ function Profile() {
           </Link>
         </div>
       </div>
-      <h2 className="profile-header">YOUR PROFILE</h2>
+      <h2 className="profile-header">PROFILE</h2>
 
       <div className="main-ctn">
         <div className="left-main-ctn">

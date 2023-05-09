@@ -24,7 +24,7 @@ function RegisterForm() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Register | Trivia Game";
+    document.title = "Register | Quantum Quiz";
   }, []);
 
   useEffect(() => {

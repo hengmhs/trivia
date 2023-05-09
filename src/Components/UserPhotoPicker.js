@@ -20,6 +20,10 @@ function UserPhotoPicker() {
   const profilePhotosRef = storageRef(storage, "profilePhotos");
 
   useEffect(() => {
+    document.title = "Photo Picker | Quantum Quiz";
+  }, []);
+
+  useEffect(() => {
     // Get a list of all files in profilePhotos
     listAll(profilePhotosRef).then((res) => {
       const photoNames = res.items.map((item) => item.name);
@@ -89,7 +93,7 @@ function UserPhotoPicker() {
                 alt="Selected avatar"
                 className="user-avatar"
               />
-              {response && <div>{response} 🎉</div>}
+              {response && <div className="response-text">{response} 🎉</div>}
             </div>
           )}
         </div>

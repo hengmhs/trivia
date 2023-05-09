@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../App.css";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 
 const InvalidRoom = () => {
+  useEffect(() => {
+    document.title = "Invalid Room | Quantum Quiz";
+  }, []);
+
   return (
     <div className="App">
       <div className="error-container">

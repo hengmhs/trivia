@@ -4,13 +4,16 @@
 import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
-import LoginError from "./LoginError";
 import QuantumLogo from "../images/QuantumLogo.png";
 import Button from "@mui/material/Button";
 
 function Enter() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Enter | Quantum Quiz";
+  }, []);
 
   useEffect(() => {
     if (user) {

@@ -16,6 +16,10 @@ function User() {
   const userRef = databaseRef(database, `users/${id}`);
 
   useEffect(() => {
+    document.title = "User Profile | Quantum Quiz";
+  }, []);
+
+  useEffect(() => {
     onValue(userRef, (snapshot) => {
       const userData = snapshot.val();
       console.log("User data: ", userData);
