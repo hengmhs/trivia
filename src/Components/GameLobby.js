@@ -16,7 +16,6 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Button from "@mui/material/Button";
-import { Remove } from "@mui/icons-material";
 
 // Objective: Users can join room via the React Router Link, and can increment/decrement counters
 
@@ -33,6 +32,7 @@ const GameLobby = () => {
   const [hostUID, setHostUID] = useState("");
   const [gameStarted, setGameStarted] = useState(false);
   const [roomName, setRoomName] = useState("placeholder room name");
+  const [isAllGameOver, setIsAllGameOver] = useState(null); // The game over status for ALL players
   const navigate = useNavigate();
 
   // get the room key from the URL, params refers to path="/room/:roomKey"
@@ -121,29 +121,43 @@ const GameLobby = () => {
             .catch((error) => {
               console.error(error);
             });
+        }
+      }
+    });
+  }, []);
 
-          // Check for connecting and disconnecting players
-          // Check for whether the game has started
-          onValue(currentRoomRef, (room) => {
-            console.log("Room Data: ", room);
-            if (room.val()) {
-              const roomData = room.val();
-              setConnectedPlayers(roomData.playerList);
-              setGameStarted(roomData.gameStarted);
-            } else {
-              // if the host has deleted the room
-              // TODO: create a check to see if the game is over
-              // if the game is NOT over and the host has left, navigate to invalid
-              // if the game is over and the host has left, do nothing
-              navigate("/invalid");
-            }
-          });
+  // returning onValue in a useEffect deletes the onValue listener when the component unmounts
+  useEffect(() => {
+    // Check for connecting and disconnecting players
+    // Check for whether the game has started
+    return onValue(currentRoomRef, (room) => {
+      console.log("Room Data: ", room);
+      if (room.val()) {
+        const roomData = room.val();
+        setConnectedPlayers(roomData.playerList);
+        setGameStarted(roomData.gameStarted);
+      } else {
+        // when the host has deleted the room:
+        // if the game is NOT over and the host has left, navigate to invalid
+        // else if the game is over and the host has left, do nothing
+        if (!isAllGameOver && isAllGameOver !== null) {
+          console.log("isAllGameOver: ", isAllGameOver);
+          navigate("/invalid");
+        }
+      }
+    });
+  }, []);
 
-          // Check for changing player scores
-          const currentScoreRef = ref(database, `${DB_SCORE_KEY}/${roomKey}`);
-          onValue(currentScoreRef, (score) => {
-            const scoreData = score.val();
-            /* scoreData = {
+  useEffect(() => {
+    // Check for changing player scores
+    const currentScoreRef = ref(database, `${DB_SCORE_KEY}/${roomKey}`);
+    return onValue(currentScoreRef, (score) => {
+      // if scores exist, then update them
+      // when the host has left and scores don't exist, do not update
+      // if the game is over, do not update the scores
+      if (score.val() && !isAllGameOver) {
+        const scoreData = score.val();
+        /* scoreData = {
         uid: {
           displayName: str,
           score: int,
@@ -153,9 +167,7 @@ const GameLobby = () => {
           score: int,
         },,
       } */
-            setScores(scoreData);
-          });
-        }
+        setScores(scoreData);
       }
     });
   }, []);
@@ -249,6 +261,10 @@ const GameLobby = () => {
             DB_GAME_OVER_KEY={DB_GAME_OVER_KEY}
             userUID={userUID}
             scores={scores}
+            isAllGameOver={isAllGameOver}
+            setIsAllGameOver={() => {
+              setIsAllGameOver(true);
+            }}
           />
           {!gameStarted && (
             <Button onClick={startGame} variant="contained">
@@ -261,6 +277,7 @@ const GameLobby = () => {
           <div>
             {Object.entries(scores).map((scoreCard) => {
               // ["uid", [{displayName: str, score: int}]]
+              console.log(scoreCard);
               const displayName = scoreCard[1].displayName;
               const score = scoreCard[1].score;
               return (

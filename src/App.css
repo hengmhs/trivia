@@ -740,3 +740,8 @@ input[type="submit"]:hover {
 .details-text {
   gap: 10px;
 }
+
+.quiz-category {
+  color: rgb(96, 95, 95);
+  margin: 1em;
+}
