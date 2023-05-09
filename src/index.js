@@ -17,6 +17,7 @@ import User from "./Components/User";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import GameAlreadyStarted from "./Components/GameAlreadyStarted";
 
 const theme = createTheme({
   status: {
@@ -54,6 +55,7 @@ root.render(
             <Route path="/users" element={<UsersList />} />
             <Route path="/users/:id" element={<User />} />
             <Route path="/invalid" element={<InvalidRoom />} />
+            <Route path="/alreadystarted" element={<GameAlreadyStarted />} />
             <Route path="/room/:roomKey" element={<GameLobby />} />
           </Route>
         </Routes>

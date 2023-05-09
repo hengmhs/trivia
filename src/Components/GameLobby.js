@@ -47,48 +47,52 @@ const GameLobby = () => {
       if (!snapshot.child(roomKey).exists()) {
         navigate("/invalid");
       } else {
-        onAuthStateChanged(auth, (user) => {
-          if (user) {
-            // TODO: replace with Auth
-            setDisplayName(user.displayName);
-            setUserUID(user.uid);
+        console.log("Snapshot RoomKey: ", snapshot.child(roomKey).val());
+        if (snapshot.child(roomKey).val().gameStarted === true) {
+          navigate("/alreadystarted");
+        } else {
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              // TODO: replace with Auth
+              setDisplayName(user.displayName);
+              setUserUID(user.uid);
 
-            // create user id in rooms/roomKey/playerList
-            const connectedPlayerRef = ref(
-              database,
-              `${DB_ROOM_KEY}/${roomKey}/playerList/${user.uid}`
-            );
-            set(connectedPlayerRef, user.displayName);
-            onDisconnect(connectedPlayerRef).remove(connectedPlayerRef);
+              // create user id in rooms/roomKey/playerList
+              const connectedPlayerRef = ref(
+                database,
+                `${DB_ROOM_KEY}/${roomKey}/playerList/${user.uid}`
+              );
+              set(connectedPlayerRef, user.displayName);
+              onDisconnect(connectedPlayerRef).remove(connectedPlayerRef);
 
-            // create user id with score card in scores/roomKey
-            const scoreRef = ref(
-              database,
-              `${DB_SCORE_KEY}/${roomKey}/${user.uid}`
-            );
-            set(scoreRef, {
-              displayName: user.displayName,
-              score: 0,
-            });
-            onDisconnect(scoreRef).remove(scoreRef);
+              // create user id with score card in scores/roomKey
+              const scoreRef = ref(
+                database,
+                `${DB_SCORE_KEY}/${roomKey}/${user.uid}`
+              );
+              set(scoreRef, {
+                displayName: user.displayName,
+                score: 0,
+              });
+              onDisconnect(scoreRef).remove(scoreRef);
 
-            // create user id in gameOver/roomKey
-            const gameOverRef = ref(
-              database,
-              `${DB_GAME_OVER_KEY}/${roomKey}/${user.uid}`
-            );
-            set(gameOverRef, {
-              displayName: user.displayName,
-              gameOver: false,
-            });
-            onDisconnect(gameOverRef).remove(gameOverRef);
-          } else {
-            console.log("No one is logged in");
-            // User is signed out
-          }
-        });
+              // create user id in gameOver/roomKey
+              const gameOverRef = ref(
+                database,
+                `${DB_GAME_OVER_KEY}/${roomKey}/${user.uid}`
+              );
+              set(gameOverRef, {
+                displayName: user.displayName,
+                gameOver: false,
+              });
+              onDisconnect(gameOverRef).remove(gameOverRef);
+            } else {
+              console.log("No one is logged in");
+              // User is signed out
+            }
+          });
 
-        /*
+          /*
    room = {
     gameStarted: false,
     hostDisplayName: str,
@@ -99,38 +103,38 @@ const GameLobby = () => {
    } 
    */
 
-        // Get host id
-        get(currentRoomRef)
-          .then((room) => {
-            if (room) {
-              setHostUID(room.val().hostUID);
+          // Get host id
+          get(currentRoomRef)
+            .then((room) => {
+              if (room) {
+                setHostUID(room.val().hostUID);
+              } else {
+                console.log("No data available");
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+
+          // Check for connecting and disconnecting players
+          // Check for whether the game has started
+          onValue(currentRoomRef, (room) => {
+            console.log("Room Data: ", room);
+            if (room.val()) {
+              const roomData = room.val();
+              setConnectedPlayers(roomData.playerList);
+              setGameStarted(roomData.gameStarted);
             } else {
-              console.log("No data available");
+              // if the host has deleted the room
+              navigate("/invalid");
             }
-          })
-          .catch((error) => {
-            console.error(error);
           });
 
-        // Check for connecting and disconnecting players
-        // Check for whether the game has started
-        onValue(currentRoomRef, (room) => {
-          console.log("Room Data: ", room);
-          if (room.val()) {
-            const roomData = room.val();
-            setConnectedPlayers(roomData.playerList);
-            setGameStarted(roomData.gameStarted);
-          } else {
-            // if the host has deleted the room
-            navigate("/invalid");
-          }
-        });
-
-        // Check for changing player scores
-        const currentScoreRef = ref(database, `${DB_SCORE_KEY}/${roomKey}`);
-        onValue(currentScoreRef, (score) => {
-          const scoreData = score.val();
-          /* scoreData = {
+          // Check for changing player scores
+          const currentScoreRef = ref(database, `${DB_SCORE_KEY}/${roomKey}`);
+          onValue(currentScoreRef, (score) => {
+            const scoreData = score.val();
+            /* scoreData = {
         uid: {
           displayName: str,
           score: int,
@@ -140,8 +144,9 @@ const GameLobby = () => {
           score: int,
         },,
       } */
-          setScores(scoreData);
-        });
+            setScores(scoreData);
+          });
+        }
       }
     });
   }, []);
