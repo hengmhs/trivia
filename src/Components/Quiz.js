@@ -14,6 +14,7 @@ import GameOverScreen from "./GameOverScreen.js";
 import Timer from "./Timer";
 import { Paper } from "@mui/material";
 import CorrectAlien from "../images/correct_alien.png";
+import WrongAlien from "../images/wrong_alien.png";
 
 const Quiz = (props) => {
   const firstRender = useRef(true);
@@ -160,12 +161,14 @@ const Quiz = (props) => {
     }
     if (currentAnswer === userAnswer) {
       setQuizText(`Correct! ${currentAnswer} was the answer.`);
+      setAlienImage(CorrectAlien);
       increaseScore();
       setCurrentQuestionIndex((currentQuestionIndex) => {
         return currentQuestionIndex + 1;
       });
     } else {
       setQuizText(`Wrong, the correct answer was: ${currentAnswer}`);
+      setAlienImage(WrongAlien);
       setCurrentQuestionIndex((currentQuestionIndex) => {
         return currentQuestionIndex + 1;
       });
@@ -174,6 +177,7 @@ const Quiz = (props) => {
 
   const timeOut = () => {
     setQuizText(`You ran out of time. ${currentAnswer} was the answer.`);
+    setAlienImage(WrongAlien);
     if (currentQuestionIndex >= questionList.length - 1) {
       submitGameOver();
       setIsSingleGameOver(true);
@@ -214,10 +218,6 @@ const Quiz = (props) => {
       )}
       {props.gameStarted && !isSingleGameOver && (
         <div>
-          <div className="alien">
-            <img src={CorrectAlien} alt="Correct" />
-          </div>
-
           <div>
             Q. {currentQuestionIndex + 1}/{questionList.length}:{" "}
             {he.decode(currentQuestionData.question)}
@@ -261,6 +261,9 @@ const Quiz = (props) => {
           </div>
         </div>
       )}
+      <div>
+        {alienImage && <img src={alienImage} alt="Alien" className="alien" />}
+      </div>
       <div>{quizText}</div>
       <div>
         {isSingleGameOver && (
