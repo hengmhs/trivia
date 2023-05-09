@@ -16,6 +16,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Button from "@mui/material/Button";
+import { Paper } from "@mui/material";
 
 // Objective: Users can join room via the React Router Link, and can increment/decrement counters
 
@@ -242,18 +243,6 @@ const GameLobby = () => {
       </div>
       <div className="game-lobby-container">
         <div>
-          <h3>Connected Players</h3>
-          <div>
-            {Object.entries(connectedPlayers).map((player) => {
-              // player = ['uid':'displayName']
-              return <li key={player[0]}>{player[1]}</li>;
-            })}
-          </div>
-          <div>
-            <i>Note: When the host disconnects, the room is deleted.</i>
-          </div>
-        </div>
-        <div>
           <Quiz
             gameStarted={gameStarted}
             roomKey={roomKey}
@@ -267,23 +256,33 @@ const GameLobby = () => {
             }}
           />
           {!gameStarted && (
-            <Button onClick={startGame} variant="contained">
-              Start Game
-            </Button>
+            <div className="game-lobby-start-btn">
+              <Button onClick={startGame} variant="contained">
+                Start Game
+              </Button>
+            </div>
           )}
         </div>
+
         <div>
-          <h3>Scores: </h3>
+          <h3>Connected Players: </h3>
+          <i>Note: When the host disconnects, the room is deleted.</i>
           <div>
             {Object.entries(scores).map((scoreCard) => {
               // ["uid", [{displayName: str, score: int}]]
-              console.log(scoreCard);
               const displayName = scoreCard[1].displayName;
               const score = scoreCard[1].score;
               return (
-                <div key={"score" + scoreCard[0]}>
-                  {displayName} : {score}{" "}
-                </div>
+                <Paper
+                  key={"score" + scoreCard[0]}
+                  className="game-lobby-player-card"
+                  elevation={12}
+                >
+                  <div className="game-lobby-player-card-name">
+                    {displayName}
+                  </div>
+                  <div className="game-lobby-player-card-score">{score}</div>
+                </Paper>
               );
             })}
           </div>

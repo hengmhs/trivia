@@ -745,3 +745,24 @@ input[type="submit"]:hover {
   color: rgb(96, 95, 95);
   margin: 1em;
 }
+
+.game-lobby-start-btn {
+  margin: 1em;
+}
+
+.game-lobby-player-card {
+  margin: 1em;
+  display: flex;
+}
+
+.game-lobby-player-card-name {
+  width: 80%;
+  padding: 0.5em;
+}
+
+.game-lobby-player-card-score {
+  width: 20%;
+  height: 100%;
+  padding: 0.5em;
+  background-color: #64748b;
+}
