@@ -806,7 +806,7 @@ input[type="submit"]:hover {
   height: 10em;
 }
 
-@media only screen and (max-width: 600px) {
+@media (max-width: 600px) {
   .home-content-container {
     display: flex;
     flex-direction: column;
@@ -818,5 +818,10 @@ input[type="submit"]:hover {
     margin: 0;
     background-size: cover;
     background-position: center;
+    height: auto;
+  }
+
+  .navbar-user-btn {
+    display: none;
   }
 }
