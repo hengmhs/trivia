@@ -35,6 +35,10 @@ const Timer = ({ seconds, timeOut, currentQuestionIndex }) => {
     });
   }, [currentQuestionIndex]);
 
-  return <div>{timeLeft}s</div>;
+  return (
+    <div className="timer">
+      <div>🕒 {timeLeft}s</div>
+    </div>
+  );
 };
 export default Timer;

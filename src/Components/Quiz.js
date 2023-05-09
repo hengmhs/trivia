@@ -12,6 +12,7 @@ import {
 import { database } from "../firebase";
 import GameOverScreen from "./GameOverScreen.js";
 import Timer from "./Timer";
+import { Paper } from "@mui/material";
 
 const Quiz = (props) => {
   const firstRender = useRef(true);
@@ -219,38 +220,38 @@ const Quiz = (props) => {
             {currentQuestionData.category} - {currentQuestionData.difficulty}
           </div>
           <div>
-            <button
+            <Paper
               className="option-btn"
               onClick={() => {
                 submitAnswer(0);
               }}
             >
-              A: {currentOptions[0]}
-            </button>
-            <button
+              {currentOptions[0]}
+            </Paper>
+            <Paper
               className="option-btn"
               onClick={() => {
                 submitAnswer(1);
               }}
             >
-              B: {currentOptions[1]}
-            </button>
-            <button
+              {currentOptions[1]}
+            </Paper>
+            <Paper
               className="option-btn"
               onClick={() => {
                 submitAnswer(2);
               }}
             >
-              C: {currentOptions[2]}
-            </button>
-            <button
+              {currentOptions[2]}
+            </Paper>
+            <Paper
               className="option-btn"
               onClick={() => {
                 submitAnswer(3);
               }}
             >
-              D: {currentOptions[3]}
-            </button>
+              {currentOptions[3]}
+            </Paper>
           </div>
         </div>
       )}

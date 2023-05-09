@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { Paper } from "@mui/material";
 
 const GameOverScreen = (props) => {
   useEffect(() => {
@@ -18,7 +19,6 @@ const GameOverScreen = (props) => {
       const uid = scoreCard[0];
       scoreArray.push([score, displayName, winner, uid]);
     });
-    console.log("unsorted scoreArray: ", scoreArray);
     // sort from highest score to lowest score
     scoreArray.sort((scoreData1, scoreData2) => {
       // scoreData1 = [userScore, displayName, isWinner]
@@ -30,7 +30,6 @@ const GameOverScreen = (props) => {
         return 0;
       }
     });
-    console.log("sorted scoreArray:", scoreArray);
     // reset all scoreData to not winners
     scoreArray.map((scoreData) => {
       scoreData[2] = false;
@@ -48,10 +47,17 @@ const GameOverScreen = (props) => {
         <div>Rankings</div>
         {scoreArray.map((scoreData) => {
           return (
-            <div key={scoreData[3]}>
-              {scoreData[2] && <b> Winner </b>}
-              {scoreData[1]} : {scoreData[0]}
-            </div>
+            <Paper
+              key={scoreData[3]}
+              className="game-over-player-card"
+              elevation={12}
+            >
+              <div className="game-over-player-card-name">{scoreData[1]}</div>
+              <div className="game-over-medal">
+                {scoreData[2] && <div>🏆</div>}
+              </div>
+              <div className="game-over-player-card-score">{scoreData[0]}</div>
+            </Paper>
           );
         })}
         <div>
@@ -67,8 +73,8 @@ const GameOverScreen = (props) => {
     <div>
       <h3>Results</h3>
       <div>{!props.isAllGameOver && <h3>Waiting for other players...</h3>}</div>
-      <div>{props.isAllGameOver && <h1>Game Over</h1>}</div>
-      {displayRanking()}
+      <div>{props.isAllGameOver && <h2>Game Over</h2>}</div>
+      {props.isAllGameOver && displayRanking()}
     </div>
   );
 };

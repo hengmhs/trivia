@@ -157,6 +157,7 @@ body {
   padding: 1em;
   margin: 1em;
   background-color: rgb(179, 207, 223);
+  cursor: pointer;
 }
 
 .login-info {
@@ -673,7 +674,6 @@ input[type="submit"]:hover {
   width: 100%;
   margin: 1em;
   display: flex;
-  gap: 1em;
   justify-content: space-evenly;
 }
 
@@ -765,4 +765,34 @@ input[type="submit"]:hover {
   height: 100%;
   padding: 0.5em;
   background-color: #64748b;
+}
+
+.timer {
+  margin: 1em;
+}
+
+.game-over-player-card {
+  margin: 1em;
+  display: flex;
+  align-content: center;
+}
+
+.game-over-player-card-name {
+  width: 70%;
+  padding: 0.5em;
+}
+
+.game-over-player-card-score {
+  width: 20%;
+  height: 100%;
+  padding: 0.5em;
+  background-color: #64748b;
+}
+
+.game-over-medal {
+  width: 10%;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  margin: 0 5% 0 0;
 }
