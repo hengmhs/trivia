@@ -391,22 +391,22 @@ body {
 }
 
 /* width */
-::-webkit-scrollbar {
+.room-display-container::-webkit-scrollbar {
   width: 10px;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+.room-display-container::-webkit-scrollbar-track {
   background: rgba(255, 255, 255);
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+.room-display-container::-webkit-scrollbar-thumb {
   background: #081930;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.room-display-container::-webkit-scrollbar-thumb:hover {
   background: #040b16;
 }
 
@@ -663,16 +663,15 @@ input[type="submit"]:hover {
 .error-container {
   text-align: center;
   width: 100%;
-  margin: 1em;
   display: flex;
   flex-direction: column;
   gap: 1em;
+  overflow: hidden;
 }
 
 .game-lobby-container {
   text-align: center;
   width: 100%;
-  margin: 1em;
   display: flex;
   justify-content: space-evenly;
 }
@@ -800,4 +799,9 @@ input[type="submit"]:hover {
 .alien {
   width: 5em;
   height: 5em;
+}
+
+.invalid-alien {
+  width: 10em;
+  height: 10em;
 }
