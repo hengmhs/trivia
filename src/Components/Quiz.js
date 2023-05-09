@@ -213,7 +213,7 @@ const Quiz = (props) => {
       {props.gameStarted && !isSingleGameOver && (
         <div>
           <div>
-            Q. {currentQuestionIndex + 1}/5:{" "}
+            Q. {currentQuestionIndex + 1}/{questionList.length}:{" "}
             {he.decode(currentQuestionData.question)}
           </div>
           <div>
