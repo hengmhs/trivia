@@ -33,6 +33,7 @@ const GameLobby = () => {
   const [hostUID, setHostUID] = useState("");
   const [gameStarted, setGameStarted] = useState(false);
   const [roomName, setRoomName] = useState("placeholder room name");
+  const [isAllGameOver, setIsAllGameOver] = useState(false); // The game over status for ALL players
   const navigate = useNavigate();
 
   // get the room key from the URL, params refers to path="/room/:roomKey"
@@ -245,6 +246,8 @@ const GameLobby = () => {
             DB_GAME_OVER_KEY={DB_GAME_OVER_KEY}
             userUID={userUID}
             scores={scores}
+            isAllGameOver={isAllGameOver}
+            setIsAllGameOver={setIsAllGameOver}
           />
           {!gameStarted && (
             <Button onClick={startGame} variant="contained">

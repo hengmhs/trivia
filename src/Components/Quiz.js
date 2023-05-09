@@ -18,8 +18,7 @@ const Quiz = (props) => {
   const [currentOptions, setCurrentOptions] = useState(["A", "B", "C", "D"]);
   const [currentAnswer, setCurrentAnswer] = useState(null);
   const [quizText, setQuizText] = useState("");
-  // The game over status for ALL players
-  const [isAllGameOver, setIsAllGameOver] = useState(false);
+
   // The game over status for just this single player
   const [isSingleGameOver, setIsSingleGameOver] = useState(false);
   const [questionList, setQuestionList] = useState([
@@ -197,8 +196,8 @@ const Quiz = (props) => {
       }
     });
     // this will loop infinitely without !isAllGameOver
-    if (allPlayersGameOver && !isAllGameOver) {
-      setIsAllGameOver(true);
+    if (allPlayersGameOver && !props.isAllGameOver) {
+      props.setIsAllGameOver(true);
     }
   });
 
@@ -256,7 +255,7 @@ const Quiz = (props) => {
       <div>
         {isSingleGameOver && (
           <GameOverScreen
-            isAllGameOver={isAllGameOver}
+            isAllGameOver={props.isAllGameOver}
             roomKey={props.roomKey}
             scores={props.scores}
           />
