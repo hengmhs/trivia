@@ -25,6 +25,8 @@ const GameFeed = (props) => {
           });
         });
         setOpenGameList(roomList);
+      } else {
+        setOpenGameList([]);
       }
     });
   }, []);
