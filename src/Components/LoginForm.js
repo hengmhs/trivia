@@ -1,8 +1,3 @@
-// Login form
-// Existing users can log in using email and password
-// On successful login, users are taken to Main page
-// Link to Register page for new users
-
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +13,7 @@ function LoginForm() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Login | Trivia Game";
+    document.title = "Login | Quantum Quiz";
   }, []);
 
   useEffect(() => {
@@ -31,17 +26,13 @@ function LoginForm() {
     e.preventDefault();
     setError();
 
-    if (user) {
-      navigate("/sessionerror");
-    } else {
-      await login(email, password)
-        .then((res) => {
-          navigate("/home");
-        })
-        .catch((err) => {
-          setError(err.toString());
-        });
-    }
+    await login(email, password)
+      .then((res) => {
+        navigate("/home");
+      })
+      .catch((err) => {
+        setError(err.toString());
+      });
   };
 
   return (

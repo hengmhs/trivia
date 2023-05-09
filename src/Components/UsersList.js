@@ -8,6 +8,10 @@ function UsersList() {
   const [usersRef, setUsersRef] = useState(null);
 
   useEffect(() => {
+    document.title = "Users | Quantum Quiz";
+  }, []);
+
+  useEffect(() => {
     const usersRef = databaseRef(database, "users");
     setUsersRef(usersRef);
     onValue(usersRef, (snapshot) => {

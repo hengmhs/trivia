@@ -40,6 +40,10 @@ const GameLobby = () => {
   const currentRoomRef = ref(database, `${DB_ROOM_KEY}/${roomKey}`);
   const questionsRef = ref(database, `${DB_QUESTIONS_KEY}/${roomKey}`);
 
+  useEffect(() => {
+    document.title = "Game Room | Quantum Quiz";
+  }, []);
+
   // componentDidMount
   useEffect(() => {
     const dbRef = ref(database, `${DB_ROOM_KEY}`);

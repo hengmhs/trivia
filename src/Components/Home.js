@@ -15,8 +15,9 @@ const DB_QUESTIONS_KEY = "questions";
 
 const Home = () => {
   useEffect(() => {
-    document.title = "Main | Trivia Game";
+    document.title = "Home | Quantum Quiz";
   }, []);
+
   const navigate = useNavigate();
 
   const createRoom = (e) => {
