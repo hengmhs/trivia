@@ -8,6 +8,7 @@ import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import doesUsernameExist from "../Utils/doesUsernameExist";
 import getFirebaseErrorMessage from "../Utils/getFirebaseErrorMessage";
+import QuantumLogo from "../images/QuantumLogo.png";
 
 function RegisterForm() {
   const [displayName, setDisplayName] = useState("");
@@ -44,16 +45,14 @@ function RegisterForm() {
         const newUserRef = databaseRef(database, "users/" + newUser.uid);
         await set(newUserRef, {
           email: email,
-          photoURL:
-            "https://firebasestorage.googleapis.com/v0/b/trivia-7c009.appspot.com/o/images%2Fdefault-user-icon-13.jpg?alt=media&token=d7026bf6-d791-425a-a389-cc14babb21c9",
+          photoURL: QuantumLogo,
           regDate: newUser.metadata.creationTime,
           lastOnline: newUser.metadata.lastSignInTime,
           username: displayName,
         });
         await updateProfile(newUser, {
           displayName: displayName,
-          photoURL:
-            "https://firebasestorage.googleapis.com/v0/b/trivia-7c009.appspot.com/o/images%2Fdefault-user-icon-13.jpg?alt=media&token=d7026bf6-d791-425a-a389-cc14babb21c9",
+          photoURL: QuantumLogo,
         });
         navigate("/home");
       } catch (error) {
