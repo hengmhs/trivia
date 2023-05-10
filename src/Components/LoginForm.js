@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
+import getFirebaseErrorMessage from "../Utils/getFirebaseErrorMessage";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 
@@ -24,14 +25,14 @@ function LoginForm() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError();
+    setError("");
 
     await login(email, password)
       .then((res) => {
         navigate("/home");
       })
-      .catch((err) => {
-        setError(err.toString());
+      .catch((error) => {
+        setError(getFirebaseErrorMessage(error));
       });
   };
 
