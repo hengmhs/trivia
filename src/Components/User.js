@@ -48,7 +48,6 @@ function User() {
 
           <div className="user-details details-text">
             <span className="username-text">{userData.username}</span>
-            <span className="status-text">online {userData.status}</span>
             <span>Member since {userData.regDate.slice(8, 16)}</span>
             <span>Last seen {moment(userData.lastOnline).fromNow()}</span>
           </div>
