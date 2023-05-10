@@ -20,7 +20,6 @@ const Timer = ({ seconds, timeOut, currentQuestionIndex }) => {
   useEffect(() => {
     if (timeLeft <= 0) {
       clearInterval(intervalRef.current);
-      console.log("Time is up");
       timeOut();
     }
   }, [timeLeft]);

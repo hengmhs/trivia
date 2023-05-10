@@ -14,7 +14,6 @@ const GameFeed = (props) => {
       if (data.val() !== null) {
         const roomList = [];
         Object.entries(data.val()).map((roomData) => {
-          console.log(roomData);
           roomList.push({
             key: roomData[0],
             roomName: roomData[1].roomName,
