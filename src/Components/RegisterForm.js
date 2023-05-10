@@ -8,7 +8,7 @@ import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import doesUsernameExist from "../Utils/doesUsernameExist";
 import getFirebaseErrorMessage from "../Utils/getFirebaseErrorMessage";
-import QuantumLogo from "../images/QuantumLogo.png";
+import cet from "../images/cet.png";
 
 function RegisterForm() {
   const [displayName, setDisplayName] = useState("");
@@ -45,14 +45,14 @@ function RegisterForm() {
         const newUserRef = databaseRef(database, "users/" + newUser.uid);
         await set(newUserRef, {
           email: email,
-          photoURL: QuantumLogo,
+          photoURL: cet,
           regDate: newUser.metadata.creationTime,
           lastOnline: newUser.metadata.lastSignInTime,
           username: displayName,
         });
         await updateProfile(newUser, {
           displayName: displayName,
-          photoURL: QuantumLogo,
+          photoURL: cet,
         });
         navigate("/home");
       } catch (error) {
