@@ -1,6 +1,3 @@
-// First page users see
-// Navigate to Login/Register page via buttons
-
 import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
